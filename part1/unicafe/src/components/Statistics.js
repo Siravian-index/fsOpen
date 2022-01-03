@@ -1,20 +1,20 @@
-import Title from './Title'
-
+import getPercentage from '../utils/getPercentage'
+import getSum from '../utils/getSum'
+import getAvg from '../utils/getAvg'
+import StatisticLine from './StatisticLine'
 const Statistics = ({ stats }) => {
-  const title = 'statistics'
   const { good, neutral, bad } = stats
-
   return (
-    <>
-      <div>
-        <Title title={title} />
-        <ul>
-          <li>good {good}</li>
-          <li>neutral {neutral}</li>
-          <li>bad {bad}</li>
-        </ul>
-      </div>
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text={'good'} value={good} />
+        <StatisticLine text={'neutral'} value={neutral} />
+        <StatisticLine text={'bad'} value={bad} />
+        <StatisticLine text={'all'} value={getSum(stats)} />
+        <StatisticLine text={'average'} value={getAvg(stats)} />
+        <StatisticLine text={'positive'} value={getPercentage(stats)} />
+      </tbody>
+    </table>
   )
 }
 
