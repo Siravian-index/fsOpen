@@ -8,6 +8,13 @@
 # testing
 /coverage
 
+#history plugin
+.history
+
+#vscode plugin
+.vscode
+
+
 # production
 /build
 
