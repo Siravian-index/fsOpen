@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Title from './components/Title'
 import getRandomNum from './utils/getRandomNum'
 import initializeArr from './utils/initializeArr'
+import Anecdote from './components/Anecdote'
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -37,24 +38,13 @@ const App = () => {
   return (
     <div>
       <Title title={'Anecdote of the day'} />
-      <p>{anecdotes[selected]}</p>
-      {/* create a display votes component which takes an index as prop */}
-      <p>
-        has {votes[selected]} {votes[selected] === 1 ? 'vote' : 'votes'}
-      </p>
+      <Anecdote anecdotes={anecdotes} votes={votes} index={selected} />
       <div>
         <Button text={'vote'} callback={voteAnecdote} />
         <Button text={'next anecdote'} callback={getNextAnecdote} />
       </div>
       <Title title={'Anecdote with most votes'} />
-      {checkVotes(votes) && (
-        <>
-          <p>{anecdotes[mostVotedAnecdote(votes)]}</p>
-          <p>
-            has {votes[mostVotedAnecdote(votes)]} {votes[mostVotedAnecdote(votes)] === 1 ? 'vote' : 'votes'}
-          </p>
-        </>
-      )}
+      {checkVotes(votes) && <Anecdote anecdotes={anecdotes} votes={votes} index={mostVotedAnecdote(votes)} />}
     </div>
   )
 }
