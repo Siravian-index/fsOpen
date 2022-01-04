@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
 
-function App() {
+const App = () => {
+  const [persons, setPersons] = useState([{ name: 'Arto Hellas' }])
+  const [newName, setNewName] = useState('')
+
+  const addContact = (e, obj, setObj, name, setName) => {
+    e.preventDefault()
+    const exists = persons.some((p) => p.name === newName)
+    if (!exists) {
+      const newContact = { name: newName }
+      setPersons((prev) => [...prev, newContact])
+      setNewName('')
+    } else {
+      alert(`${newName} is already added to phonebook`)
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={(e) => addContact(e)}>
+        <div>
+          name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
+        </div>
+        <div>
+          <button type='submit'>add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      {persons.map((p) => (
+        <p key={p.name}>{p.name}</p>
+      ))}
     </div>
-  );
+  )
 }
-
-export default App;
+export default App
