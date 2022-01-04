@@ -3,7 +3,7 @@ const Content = ({ courses }) => {
   return (
     <>
       {courses.map((course) => (
-        <Part part={course} key={course.id} />
+        <Part course={course} key={course.id} />
       ))}
     </>
   )

@@ -1,5 +1,5 @@
 import Content from './components/Content'
-import Total from './components/Total'
+import Course from './components/Course'
 const App = () => {
   const courses = [
     {
@@ -48,9 +48,7 @@ const App = () => {
 
   return (
     <div>
-      <Content courses={courses} />
-      {/* move total to part and pass an array as prop */}
-      {/* <Total content={courses} /> */}
+      <Course courses={courses} />
     </div>
   )
 }

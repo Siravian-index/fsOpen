@@ -1,8 +1,8 @@
-const Total = ({ content }) => {
+const Total = ({ course }) => {
   return (
     <>
       <div>
-        <p> {content.parts.reduce((init, obj) => init + obj.exercises, 0)} </p>
+        <b> total of {course.parts.reduce((init, obj) => init + obj.exercises, 0)} exercises </b>
       </div>
     </>
   )

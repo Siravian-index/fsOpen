@@ -1,8 +1,16 @@
-const Part = ({ part }) => {
-  console.log(part)
+import Total from './Total'
+
+const Part = ({ course }) => {
+  console.log(course)
   return (
     <>
-      <div></div>
+      <h2>{course.name}</h2>
+      {course.parts.map((e) => (
+        <p key={e.id}>
+          {e.name} {e.exercises}
+        </p>
+      ))}
+      <Total course={course} />
     </>
   )
 }
