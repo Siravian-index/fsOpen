@@ -17,6 +17,9 @@
 #vscode plugin
 .vscode
 
+#.env
+.env
+
 # misc
 .DS_Store
 .env.local

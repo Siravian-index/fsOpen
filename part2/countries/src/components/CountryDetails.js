@@ -1,6 +1,8 @@
 const CountryDetails = ({ country, languages }) => {
   const capitalPOS = 0
 
+  // useEffect -> axios.get capital weather.
+
   return (
     <>
       <h1>{country.name.common}</h1>
@@ -13,6 +15,7 @@ const CountryDetails = ({ country, languages }) => {
         ))}
       </ul>
       <img src={country.flags.png} alt={`Flag of ${country.name.common}`} />
+      {/* weather comp */}
     </>
   )
 }
