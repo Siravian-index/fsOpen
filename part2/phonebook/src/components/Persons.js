@@ -1,17 +1,12 @@
-const Persons = ({ list, filteredList, filter }) => {
+import Person from './Person'
+const Persons = ({ list, filter }) => {
   return (
     <>
-      {filter.length > 0
-        ? filteredList.map((p) => (
-            <p key={p.name}>
-              {p.name} {p.number}
-            </p>
-          ))
-        : list.map((p) => (
-            <p key={p.name}>
-              {p.name} {p.number}
-            </p>
-          ))}
+      {list
+        .filter((p) => p.name.toLowerCase().includes(filter.toLowerCase()))
+        .map((p) => (
+          <Person person={p} key={p.id} />
+        ))}
     </>
   )
 }

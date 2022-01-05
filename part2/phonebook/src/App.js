@@ -10,32 +10,30 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
   ])
-  const [filteredList, setFilteredList] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const addContact = (e) => {
     e.preventDefault()
     const exists = persons.some((p) => p.name === newName)
-    if (!exists) {
-      const newContact = { name: newName, number: newNumber }
-      setPersons((prev) => [...prev, newContact])
-      setNewName('')
-      setNewNumber('')
+    if (newName && newNumber) {
+      if (!exists) {
+        const newContact = { name: newName, number: newNumber, id: persons.length + 1 }
+        setPersons((prev) => [...prev, newContact])
+        setNewName('')
+        setNewNumber('')
+      } else {
+        alert(`${newName} is already added to phonebook`)
+      }
     } else {
-      alert(`${newName} is already added to phonebook`)
+      alert(`name and number must be filled`)
     }
-  }
-
-  const filterPerson = (e) => {
-    setFilter(e.target.value)
-    setFilteredList(persons.filter((p) => p.name.toLowerCase().includes(filter.toLowerCase())))
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} setFilter={filterPerson} />
+      <Filter filter={filter} setFilter={setFilter} />
       <h2>add a new</h2>
       <PersonForm
         handleSubmit={addContact}
@@ -45,7 +43,7 @@ const App = () => {
         setNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons list={persons} filteredList={filteredList} filter={filter} />
+      <Persons list={persons} filter={filter} />
     </div>
   )
 }
