@@ -11,6 +11,12 @@
 # production
 /build
 
+#history plugin
+.history
+
+#vscode plugin
+.vscode
+
 # misc
 .DS_Store
 .env.local
