@@ -17,7 +17,7 @@
 #vscode plugin
 .vscode
 
-#.env
+#env
 .env
 
 # misc

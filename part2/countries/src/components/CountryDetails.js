@@ -1,21 +1,23 @@
-const CountryDetails = ({ country, languages }) => {
+import Weather from './Weather'
+
+const CountryDetails = ({ country }) => {
   const capitalPOS = 0
 
   // useEffect -> axios.get capital weather.
 
   return (
     <>
-      <h1>{country.name.common}</h1>
+      <h1>{country.name}</h1>
       <p>capital {country.capital[capitalPOS]}</p>
       <p>population {country.population}</p>
       <h4>Languages</h4>
       <ul>
-        {Object.values(languages).map((lang) => (
+        {Object.values(country.langs).map((lang) => (
           <li key={lang}>{lang}</li>
         ))}
       </ul>
-      <img src={country.flags.png} alt={`Flag of ${country.name.common}`} />
-      {/* weather comp */}
+      <img src={country.flag} alt={`Flag of ${country.name}`} />
+      <Weather capital={country.capital[capitalPOS]} />
     </>
   )
 }

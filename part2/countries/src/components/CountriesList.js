@@ -3,9 +3,9 @@ const CountriesList = ({ countries, setSearch }) => {
     <>
       <div>
         {countries.map((country) => (
-          <div key={country.name.common}>
-            <span>{country.name.common} </span>
-            <button onClick={(e) => setSearch(country.name.common.toLowerCase())}>show</button>
+          <div key={country.name}>
+            <span>{country.name} </span>
+            <button onClick={(e) => setSearch(country.name.toLowerCase())}>show</button>
           </div>
         ))}
       </div>

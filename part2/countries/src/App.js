@@ -6,12 +6,22 @@ import BeMoreSpecific from './components/BeMoreSpecific'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
+  console.log(process.env.REACT_APP_API_KEY)
   useEffect(() => {
     let isMounted = true
     const getCountries = async () => {
       const res = await axios.get('https://restcountries.com/v3.1/all')
-      const filteredList = res.data.filter((c) => c.name.common.toLowerCase().includes(search.toLowerCase()))
-      console.log(filteredList)
+      const mapped = res.data.map((obj) => {
+        return {
+          flag: obj.flags.png,
+          name: obj.name.common,
+          capital: obj.capital,
+          population: obj.population,
+          langs: obj.languages,
+          latlng: obj.capitalInfo.latlng,
+        }
+      })
+      const filteredList = mapped.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
       if (isMounted) {
         setCountries(filteredList)
       }
