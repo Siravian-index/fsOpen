@@ -52,7 +52,6 @@ const Weather = ({ capital }) => {
       return (isMounted = false)
     }
   }, [capital])
-  console.log(w)
   return (
     <>
       {!isLoading && (

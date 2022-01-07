@@ -6,7 +6,6 @@ import BeMoreSpecific from './components/BeMoreSpecific'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
-  console.log(process.env.REACT_APP_API_KEY)
   useEffect(() => {
     let isMounted = true
     const getCountries = async () => {
@@ -18,7 +17,6 @@ const App = () => {
           capital: obj.capital,
           population: obj.population,
           langs: obj.languages,
-          latlng: obj.capitalInfo.latlng,
         }
       })
       const filteredList = mapped.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
@@ -52,17 +50,3 @@ const App = () => {
 }
 
 export default App
-
-{
-  /* <div>
-        {countries.length === 1 ? (
-          <Country country={countries} />
-        ) : countries.length <= 10 && countries.length > 1 ? (
-          <CountriesList countries={countries} />
-        ) : countries.length > 10 ? (
-          <BeMoreSpecific />
-        ) : (
-          <p>...</p>
-        )}
-      </div> */
-}
