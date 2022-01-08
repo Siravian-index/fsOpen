@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
-import getContacts from './API/contacts/getContacts'
+import C from './API/contacts'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -12,25 +12,29 @@ const App = () => {
   useEffect(() => {
     let m = true
     const setPersonsState = async () => {
-      const contacts = await getContacts()
+      const contacts = await C.getContacts()
       if (m) {
         setPersons(contacts)
       }
     }
     setPersonsState()
     return () => (m = false)
-  }, [])
+  }, [persons])
 
-  const addContact = (e) => {
+  const addContact = async (e) => {
     e.preventDefault()
     const exists = persons.some((p) => p.name === newName)
     if (newName && newNumber) {
       if (!exists) {
-        const newContact = { name: newName, number: newNumber, id: persons.length + 1 }
-        // axios create contact
-        setPersons((prev) => [...prev, newContact])
-        setNewName('')
-        setNewNumber('')
+        const newContact = { name: newName, number: newNumber }
+        const res = await C.createContact(newContact)
+        if (res.data) {
+          setPersons((prev) => [...prev, res.data])
+          setNewName('')
+          setNewNumber('')
+        } else {
+          alert(`${res.msg}`)
+        }
       } else {
         alert(`${newName} is already added to phonebook`)
       }

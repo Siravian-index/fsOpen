@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const deleteContact = async (id) => {
+const updateContacts = async (id) => {
   const errorMessage = 'Could not perform the operation'
   const successMessage = 'Contact updated successfully'
   try {
@@ -13,4 +13,4 @@ const deleteContact = async (id) => {
   }
 }
 
-export default deleteContact
+export default updateContacts
