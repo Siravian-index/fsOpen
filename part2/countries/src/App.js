@@ -1,28 +1,26 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { getCountries } from './API/countries'
 import Country from './components/Country'
 import CountriesList from './components/CountriesList'
 import BeMoreSpecific from './components/BeMoreSpecific'
+import useDebounce from './hooks/useDebounce'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
-
+  const debouncedSearchTerm = useDebounce(search, 500)
   useEffect(() => {
     let isMounted = true
     const setCountriesState = async () => {
-      try {
-        const countries = await getCountries(search)
+      if (debouncedSearchTerm) {
+        const countries = await getCountries(debouncedSearchTerm)
         if (isMounted) {
           setCountries(countries)
         }
-      } catch (err) {
-        console.log(err)
       }
     }
     setCountriesState()
     return () => (isMounted = false)
-  }, [search])
+  }, [debouncedSearchTerm])
   return (
     <>
       <div>

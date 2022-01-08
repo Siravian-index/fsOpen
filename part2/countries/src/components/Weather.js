@@ -7,13 +7,9 @@ const Weather = ({ capital }) => {
   useEffect(() => {
     let isMounted = true
     const setWeatherState = async () => {
-      try {
-        const weatherInfo = await getWeatherData(capital)
-        if (isMounted) {
-          setW(weatherInfo)
-        }
-      } catch (err) {
-        console.log(err)
+      const weatherInfo = await getWeatherData(capital)
+      if (isMounted) {
+        setW(weatherInfo)
       }
     }
     setWeatherState()
@@ -35,7 +31,6 @@ const Weather = ({ capital }) => {
           </p>
         </div>
       </div>
-      )
     </>
   )
 }

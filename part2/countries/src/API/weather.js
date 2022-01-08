@@ -34,6 +34,14 @@ const getWeatherData = async (capital) => {
     return simpleWeather
   } catch (err) {
     console.log(err)
+    // return a better formatted obj in case the axios call fails
+    return {
+      temperature: 'not found',
+      icon: 'not found',
+      windSpeed: 'not found',
+      windDirection: 'not found',
+      iconDescription: 'not found',
+    }
   }
 }
 

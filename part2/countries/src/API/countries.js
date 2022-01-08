@@ -15,6 +15,7 @@ const getCountries = async (search) => {
     return filteredList
   } catch (err) {
     console.log(err)
+    return []
   }
 }
 
