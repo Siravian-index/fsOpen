@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
-import axios from 'axios'
-
+import getContacts from './API/contacts/getContacts'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -11,11 +10,15 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    const getPersons = async () => {
-      const res = await axios.get('http://localhost:3001/persons')
-      setPersons(res.data)
+    let m = true
+    const setPersonsState = async () => {
+      const contacts = await getContacts()
+      if (m) {
+        setPersons(contacts)
+      }
     }
-    getPersons()
+    setPersonsState()
+    return () => (m = false)
   }, [])
 
   const addContact = (e) => {
@@ -24,6 +27,7 @@ const App = () => {
     if (newName && newNumber) {
       if (!exists) {
         const newContact = { name: newName, number: newNumber, id: persons.length + 1 }
+        // axios create contact
         setPersons((prev) => [...prev, newContact])
         setNewName('')
         setNewNumber('')
@@ -34,6 +38,10 @@ const App = () => {
       alert(`name and number must be filled`)
     }
   }
+
+  // const removeContact = (e) => {
+  //   e.preventDefault()
+  // }
 
   return (
     <div>
