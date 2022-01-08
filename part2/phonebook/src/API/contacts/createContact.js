@@ -5,7 +5,6 @@ const createContact = async (contact) => {
   const successMessage = 'Contact created successfully'
   try {
     const res = await axios.post('http://localhost:3001/persons', contact)
-    console.log(res.data)
     return { msg: successMessage, data: res.data }
   } catch (err) {
     console.log(err)

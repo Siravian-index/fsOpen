@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -21,22 +22,32 @@ const App = () => {
     return () => (m = false)
   }, [])
 
+  const clearInputs = () => {
+    setNewName('')
+    setNewNumber('')
+  }
   const addContact = async (e) => {
     e.preventDefault()
-    const exists = persons.some((p) => p.name === newName)
+    const found = persons.find((p) => p.name === newName)
     if (newName && newNumber) {
-      if (!exists) {
-        const newContact = { name: newName, number: newNumber }
+      const newContact = { name: newName, number: newNumber }
+      if (!found) {
         const res = await C.createContact(newContact)
         if (res.data) {
           setPersons((prev) => [...prev, res.data])
-          setNewName('')
-          setNewNumber('')
+          clearInputs()
         } else {
           alert(res.msg)
         }
       } else {
-        alert(`${newName} is already added to phonebook`)
+        const confirmation = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+        if (confirmation) {
+          const res = await C.updateContacts(found.id, newContact)
+          if (res.data) {
+            setPersons((prev) => prev.map((p) => (p.id !== found.id ? p : res.data)))
+            clearInputs()
+          }
+        }
       }
     } else {
       alert(`name and number must be filled`)
@@ -46,7 +57,6 @@ const App = () => {
   const removeContact = async (id) => {
     const found = persons.find((p) => p.id === id)
     if (found) {
-      // eslint-disable-next-line no-restricted-globals
       const concent = confirm(`Delete ${found.name}?`)
       if (concent) {
         const res = await C.deleteContact(id)
