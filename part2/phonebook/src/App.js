@@ -19,7 +19,7 @@ const App = () => {
     }
     setPersonsState()
     return () => (m = false)
-  }, [persons])
+  }, [])
 
   const addContact = async (e) => {
     e.preventDefault()
@@ -33,7 +33,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         } else {
-          alert(`${res.msg}`)
+          alert(res.msg)
         }
       } else {
         alert(`${newName} is already added to phonebook`)
@@ -43,9 +43,21 @@ const App = () => {
     }
   }
 
-  // const removeContact = (e) => {
-  //   e.preventDefault()
-  // }
+  const removeContact = async (id) => {
+    const found = persons.find((p) => p.id === id)
+    if (found) {
+      // eslint-disable-next-line no-restricted-globals
+      const concent = confirm(`Delete ${found.name}?`)
+      if (concent) {
+        const res = await C.deleteContact(id)
+        if (res.data) {
+          setPersons((prev) => prev.filter((p) => p.id !== id))
+        } else {
+          alert(res.msg)
+        }
+      }
+    }
+  }
 
   return (
     <div>
@@ -60,7 +72,7 @@ const App = () => {
         setNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons list={persons} filter={filter} />
+      <Persons list={persons} filter={filter} removeContact={removeContact} />
     </div>
   )
 }
