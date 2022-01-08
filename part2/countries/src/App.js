@@ -1,34 +1,27 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { getCountries } from './API/countries'
 import Country from './components/Country'
 import CountriesList from './components/CountriesList'
 import BeMoreSpecific from './components/BeMoreSpecific'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
+
   useEffect(() => {
     let isMounted = true
-    const getCountries = async () => {
-      const res = await axios.get('https://restcountries.com/v3.1/all')
-      const mapped = res.data.map((obj) => {
-        return {
-          flag: obj.flags.png,
-          name: obj.name.common,
-          capital: obj.capital,
-          population: obj.population,
-          langs: obj.languages,
+    const setCountriesState = async () => {
+      try {
+        const countries = await getCountries(search)
+        if (isMounted) {
+          setCountries(countries)
         }
-      })
-      const filteredList = mapped.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
-      if (isMounted) {
-        setCountries(filteredList)
+      } catch (err) {
+        console.log(err)
       }
     }
-    getCountries()
-
-    return () => {
-      isMounted = false
-    }
+    setCountriesState()
+    return () => (isMounted = false)
   }, [search])
   return (
     <>
