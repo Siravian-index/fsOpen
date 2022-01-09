@@ -4,12 +4,13 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import C from './API/contacts'
+import Message from './components/Message'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-
+  const [messageInfo, setMessageInfo] = useState({ show: false, msg: '' })
   useEffect(() => {
     let m = true
     const setPersonsState = async () => {
@@ -22,6 +23,22 @@ const App = () => {
     return () => (m = false)
   }, [])
 
+  useEffect(() => {
+    let m = true
+    let id = setTimeout(() => {
+      if (m) {
+        setMessageInfo({ show: false, msg: '' })
+      }
+    }, 4000)
+    return () => {
+      m = false
+      clearTimeout(id)
+    }
+  }, [messageInfo.show])
+
+  const toggleMessage = (show, msg) => {
+    setMessageInfo({ show, msg })
+  }
   const clearInputs = () => {
     setNewName('')
     setNewNumber('')
@@ -72,6 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message messageInfo={messageInfo} />
       <Filter filter={filter} setFilter={setFilter} />
       <h2>add a new</h2>
       <PersonForm
