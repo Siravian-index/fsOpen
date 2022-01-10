@@ -5,12 +5,14 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import C from './API/contacts'
 import Message from './components/Message'
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [messageInfo, setMessageInfo] = useState({ show: false, msg: '', style: '' })
+
   useEffect(() => {
     let m = true
     const setPersonsState = async () => {
@@ -29,20 +31,22 @@ const App = () => {
       if (m) {
         setMessageInfo({ show: false, msg: '', style: '' })
       }
-    }, 4000)
+    }, 3000)
     return () => {
       m = false
       clearTimeout(id)
     }
   }, [messageInfo])
 
-  const toggleMessage = (show, msg, style) => {
-    setMessageInfo({ show, msg, style })
+  const toggleMessage = (msg, style) => {
+    setMessageInfo({ show: true, msg, style })
   }
+
   const clearInputs = () => {
     setNewName('')
     setNewNumber('')
   }
+
   const addContact = async (e) => {
     e.preventDefault()
     const found = persons.find((p) => p.name === newName)
@@ -51,29 +55,27 @@ const App = () => {
       if (!found) {
         const res = await C.createContact(newContact)
         if (res.data) {
-          toggleMessage(true, res.msg, 'green')
+          toggleMessage(res.msg, 'green')
           setPersons((prev) => [...prev, res.data])
           clearInputs()
         } else {
-          toggleMessage(true, res.msg, 'red')
-          // alert(res.msg)
+          toggleMessage(res.msg, 'red')
         }
       } else {
         const confirmation = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
         if (confirmation) {
           const res = await C.updateContacts(found.id, newContact)
           if (res.data) {
-            toggleMessage(true, res.msg, 'green')
+            toggleMessage(res.msg, 'green')
             setPersons((prev) => prev.map((p) => (p.id !== found.id ? p : res.data)))
             clearInputs()
           } else {
-            toggleMessage(true, res.msg, 'red')
+            toggleMessage(res.msg, 'red')
           }
         }
       }
     } else {
-      toggleMessage(true, 'name and number must be filled', 'red')
-      // alert(`name and number must be filled`)
+      toggleMessage('name and number must be filled', 'red')
     }
   }
 
@@ -84,15 +86,14 @@ const App = () => {
       if (concent) {
         const res = await C.deleteContact(id)
         if (res.data) {
-          toggleMessage(true, res.msg, 'green')
+          toggleMessage(res.msg, 'green')
           setPersons((prev) => prev.filter((p) => p.id !== id))
         } else {
-          toggleMessage(true, res.msg, 'red')
-          // alert(res.msg)
+          toggleMessage(res.msg, 'red')
         }
       }
     } else {
-      toggleMessage(true, 'contact not found', 'red')
+      toggleMessage('contact not found', 'red')
     }
   }
 
