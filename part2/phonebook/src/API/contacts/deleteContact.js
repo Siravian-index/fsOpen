@@ -3,8 +3,9 @@ import axios from 'axios'
 const deleteContact = async (id) => {
   const errorMessage = 'Could not perform the operation'
   const successMessage = 'Contact deleted successfully'
+  const l = 'api/persons/'
   try {
-    const res = await axios.delete(`http://localhost:3001/persons/${id}`)
+    const res = await axios.delete(`${process.env.REACT_APP_ENDPOINT}${l}${id}`)
     return { msg: successMessage, data: res.status }
   } catch (err) {
     console.log(err)
