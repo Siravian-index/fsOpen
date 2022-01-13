@@ -1,9 +1,9 @@
 import axios from 'axios'
+import { baseUrl } from '.'
 
 const getContacts = async () => {
-  const l = 'api/persons/'
   try {
-    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}${l}`)
+    const res = await axios.get(baseUrl)
     return res.data
   } catch (err) {
     console.log(err)

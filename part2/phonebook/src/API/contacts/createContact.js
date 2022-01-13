@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { baseUrl } from '.'
 
 const createContact = async (contact) => {
   const errorMessage = 'Could not perform the operation'
   const successMessage = 'Contact created successfully'
-  const l = 'api/persons/'
   try {
-    const res = await axios.post(`${process.env.REACT_APP_ENDPOINT}${l}`, contact)
+    const res = await axios.post(baseUrl, contact)
     return { msg: successMessage, data: res.data }
   } catch (err) {
     console.log(err)

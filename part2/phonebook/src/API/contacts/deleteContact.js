@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { baseUrl } from '.'
 
 const deleteContact = async (id) => {
   const errorMessage = 'Could not perform the operation'
   const successMessage = 'Contact deleted successfully'
-  const l = 'api/persons/'
   try {
-    const res = await axios.delete(`${process.env.REACT_APP_ENDPOINT}${l}${id}`)
+    const res = await axios.delete(`${baseUrl}/${id}`)
     return { msg: successMessage, data: res.status }
   } catch (err) {
     console.log(err)

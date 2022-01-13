@@ -8,13 +8,13 @@ export const generateNewContact = async (array) => {
     number,
   })
   await contact.save()
-  console.log(contact, 'created')
+  console.log(`added ${contact.name} to phonebook`)
   mongoose.connection.close()
 }
 
 export const logContactList = async () => {
   const contacts = await Contact.find({})
-  console.log(`There are ${contacts.length} contacts.`)
+  console.log(`phonebook:`)
   for (let contact of contacts) {
     console.log(contact.name, contact.number)
   }
