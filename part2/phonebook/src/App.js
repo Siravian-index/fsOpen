@@ -49,33 +49,44 @@ const App = () => {
 
   const addContact = async (e) => {
     e.preventDefault()
-    const found = persons.find((p) => p.name === newName)
-    if (newName && newNumber) {
-      const newContact = { name: newName, number: newNumber }
-      if (!found) {
-        const res = await C.createContact(newContact)
-        if (res.data) {
-          toggleMessage(res.msg, 'green')
-          setPersons((prev) => [...prev, res.data])
-          clearInputs()
-        } else {
-          toggleMessage(res.msg, 'red')
-        }
-      } else {
-        const confirmation = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
-        if (confirmation) {
-          const res = await C.updateContacts(found.id, newContact)
+    try {
+      const found = persons.find((p) => p.name === newName)
+      if (newName.length > 3 && newNumber.length > 8) {
+        const newContact = { name: newName, number: newNumber }
+        if (!found) {
+          const res = await C.createContact(newContact)
           if (res.data) {
             toggleMessage(res.msg, 'green')
-            setPersons((prev) => prev.map((p) => (p.id !== found.id ? p : res.data)))
+            setPersons((prev) => [...prev, res.data])
             clearInputs()
           } else {
             toggleMessage(res.msg, 'red')
           }
+        } else {
+          const confirmation = confirm(
+            `${newName} is already added to phonebook, replace the old number with a new one?`
+          )
+          if (confirmation) {
+            const res = await C.updateContacts(found.id, newContact)
+            if (res.data) {
+              toggleMessage(res.msg, 'green')
+              setPersons((prev) => prev.map((p) => (p.id !== found.id ? p : res.data)))
+              clearInputs()
+            } else {
+              toggleMessage(res.msg, 'red')
+            }
+          }
+        }
+      } else {
+        if (newName.length < 3) {
+          toggleMessage('name must be at least 3 characters long', 'red')
+        }
+        if (newNumber.length < 8) {
+          toggleMessage('number must be at least 8 characters long', 'red')
         }
       }
-    } else {
-      toggleMessage('name and number must be filled', 'red')
+    } catch (err) {
+      console.log(err)
     }
   }
 
