@@ -1,0 +1,12 @@
+#modules
+/node_modules
+npm-debug.log
+.DS_Store
+#.env
+.env
+
+#history
+.history
+
+#vscode
+.vscode

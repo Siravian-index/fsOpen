@@ -1,0 +1,36 @@
+{
+  "name": "fsopenpart3",
+  "version": "1.0.0",
+  "description": "Testing API development",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build && cp -r build ../../part3/phonebook-backend",
+    "deploy": "git push heroku main",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "logs:prod": "heroku logs --tail"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6",
+    "mongoose-unique-validator": "^3.0.0",
+    "morgan": "^1.10.0"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "type": "module"
+}
