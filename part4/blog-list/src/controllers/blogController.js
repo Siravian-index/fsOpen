@@ -1,13 +1,12 @@
-app.get('/api/blogs', (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs)
-  })
-})
+const { Blog } = require('../models/blogSchema')
 
-app.post('/api/blogs', (request, response) => {
+const blogs = async (req, res) => {
+  const allBlogs = await Blog.find({})
+  res.json(allBlogs)
+}
+
+const newBlog = async (req, res) => {
   const blog = new Blog(request.body)
-
-  blog.save().then((result) => {
-    response.status(201).json(result)
-  })
-})
+  await blog.save()
+  res.status(201).json(blog)
+}

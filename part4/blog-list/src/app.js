@@ -9,5 +9,7 @@ config.connectDb()
 
 app.use(cors())
 app.use(express.json())
+// routes
+// app.use()
 
 module.exports = { app }
