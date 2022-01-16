@@ -1,9 +1,10 @@
 const express = require('express')
-const router = express.Router()
+const blogRouter = express.Router()
+const blogController = require('../controllers/blogController')
 
-router.get('/', (req, res) => {})
-router.get('/', (req, res) => {})
-router.get('/', (req, res) => {})
-router.get('/', (req, res) => {})
+blogRouter.get('/', blogController.allBlogs)
+// blogRouter.get('/:id')
+blogRouter.post('/', blogController.newBlog)
+// blogRouter.delete('/:id')
 
-module.exports = { router }
+module.exports = { blogRouter }

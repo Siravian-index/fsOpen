@@ -1,11 +1,11 @@
 const { Blog } = require('../models/blogSchema')
 
-const blogs = async (req, res) => {
-  const allBlogs = await Blog.find({})
-  res.json(allBlogs)
+module.exports.allBlogs = async (req, res) => {
+  const blogs = await Blog.find({})
+  res.json(blogs)
 }
 
-const newBlog = async (req, res) => {
+module.exports.newBlog = async (req, res) => {
   const blog = new Blog(request.body)
   await blog.save()
   res.status(201).json(blog)
