@@ -13,7 +13,8 @@ module.exports.allBlogs = async (req, res, next) => {
 
 module.exports.newBlog = async (req, res, next) => {
   try {
-    const blog = new Blog(request.body)
+    // change the way Blogs are created
+    const blog = new Blog(req.body)
     await blog.save()
     res.status(201).json(blog)
   } catch (err) {
