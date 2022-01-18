@@ -1,9 +1,17 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
 
-{
-    "title": "sample",
-    "author": "Jhon",
-    "url": "reddit.com/jhonPost"
+{   
+    "title": "reddit test",
+    "author": "me",
+    "url": "reddit.com/hoster",
+    "likes": 10
+}
+###
 
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "url": "reddit.com/hoster"
 }

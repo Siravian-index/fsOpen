@@ -12,11 +12,14 @@ module.exports.allBlogs = async (req, res, next) => {
 }
 
 module.exports.newBlog = async (req, res, next) => {
+  const { title, author, url } = req.body
+  if (!title || !author || !url) {
+    return res.status(400).end()
+  }
   try {
-    // change the way Blogs are created
-    const blog = new Blog(req.body)
+    const blog = new Blog({ title, author, url })
     await blog.save()
-    res.status(201).json(blog)
+    return res.status(201).json(blog)
   } catch (err) {
     logger.info(err)
     next(err)

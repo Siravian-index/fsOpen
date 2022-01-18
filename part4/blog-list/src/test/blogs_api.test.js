@@ -3,10 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const { Blog } = require('../models/blogSchema')
-const initialBlogs = [
-  { title: 'testing', author: 'david', url: 'www.reddit.com/myPost' },
-  { title: 'Sample', author: 'Jhon', url: 'www.reddit.com/hisPost' },
-]
+const { initialBlogs, nonExistingId, blogsInDB } = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -27,6 +24,29 @@ describe('basic test on the DB', () => {
   test('there is a total of two blogs', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(initialBlogs.length)
+  })
+})
+
+describe('tests blog routes', () => {
+  test('a valid blog can be added', async () => {
+    const newBlog = { title: 'test with jest', author: 'jester', url: 'jest.com' }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/i)
+
+    const blogsAtEnd = await blogsInDB()
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+    const contents = blogsAtEnd.map((b) => b.title)
+    expect(contents).toContain('test with jest')
+  })
+
+  test('blog without title is not added', async () => {
+    const newBlog = { author: 'jester', url: 'jest.com' }
+    await api.post('/api/blogs').send(newBlog).expect(400)
+    const blogsAtEnd = await blogsInDB()
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length)
   })
 })
 
