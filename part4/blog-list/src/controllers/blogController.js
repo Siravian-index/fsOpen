@@ -11,12 +11,13 @@ module.exports.allBlogs = async (req, res, next) => {
   }
 }
 module.exports.newBlog = async (req, res, next) => {
-  const { title, author, url } = req.body
+  const { title, author, url, likes } = req.body
   if (!title || !author || !url) {
     return res.status(400).end()
   }
   try {
-    const blog = new Blog({ title, author, url })
+    let defaultLikes = likes > 0 ? likes : 0
+    const blog = new Blog({ title, author, url, likes: defaultLikes })
     await blog.save()
     return res.status(201).json(blog)
   } catch (err) {
