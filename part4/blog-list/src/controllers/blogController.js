@@ -4,7 +4,7 @@ const logger = require('../utils/log/logger.js')
 module.exports.allBlogs = async (req, res, next) => {
   try {
     const blogs = await Blog.find({})
-    res.json(blogs)
+    return res.json(blogs)
   } catch (err) {
     logger.info(err)
     next(err)
@@ -31,23 +31,24 @@ module.exports.oneBlog = async (req, res, next) => {
   }
   try {
     const blog = await Blog.findById(id)
-    return res.status(200).json(blog)
+    if (blog) {
+      return res.status(200).json(blog)
+    }
+    return res.status(404).end()
   } catch (err) {
     logger.error(err)
     next(err)
   }
 }
 
-module.exports.deleteBlog = async (req, res, next) => {
+// here we are using express-async-errors library which
+// let us eliminate try/catch and still work on exceptions
+module.exports.deleteBlog = async (req, res) => {
   const { id } = req.params
   if (!id) {
     return res.status(400).end()
   }
-  try {
-    await Blog.findByIdAndDelete(id)
-    return res.status(204)
-  } catch (err) {
-    logger.error(err)
-    next(err)
-  }
+  // I am not a big fan of removing try/catch, but it is just to try the library
+  await Blog.findByIdAndDelete(id)
+  return res.status(204).end()
 }

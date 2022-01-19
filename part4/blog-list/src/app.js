@@ -1,4 +1,6 @@
 const express = require('express')
+require('express-async-errors')
+const { errorHandler, unknownEndpoint } = require('./utils/middleware/error/errorMiddlewares')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
@@ -11,5 +13,9 @@ app.use(cors())
 app.use(express.json())
 // routes
 app.use('/api/blogs', blogRouter)
+
+// errors
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 module.exports = app

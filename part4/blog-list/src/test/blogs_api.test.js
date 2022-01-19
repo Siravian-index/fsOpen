@@ -5,12 +5,27 @@ const api = supertest(app)
 const { Blog } = require('../models/blogSchema')
 const { initialBlogs, nonExistingId, blogsInDB } = require('./test_helper')
 
+// fills the DB with two obj before the test run
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObj = new Blog(initialBlogs[0])
-  await blogObj.save()
-  blogObj = new Blog(initialBlogs[1])
-  await blogObj.save()
+  // Not so DRY option
+  // let blogObj = new Blog(initialBlogs[0])
+  // await blogObj.save()
+  // blogObj = new Blog(initialBlogs[1])
+  // await blogObj.save()
+  // ----------------
+  // Good ol' for, nothing beats it.
+  for (let blog of initialBlogs) {
+    let blogObj = new Blog(blog)
+    await blogObj.save()
+  }
+  // ----------------
+  // advanced solution using Promise.all()
+  // const blogObjects = initialBlogs.map((blog) => new Blog(blog))
+  // const promiseArray = blogObjects.map((blog) => blog.save())
+  // console.log(promiseArray)
+  // await Promise.all(promiseArray)
+  // ----------------
 })
 
 describe('basic test on the DB', () => {
