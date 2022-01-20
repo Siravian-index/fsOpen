@@ -53,3 +53,22 @@ module.exports.deleteBlog = async (req, res) => {
   await Blog.findByIdAndDelete(id)
   return res.status(204).end()
 }
+
+// I did not use try/catch here either. I must admit it looks like more stylish,
+// but I honestly miss the try/catch
+module.exports.updateBlog = async (req, res) => {
+  const { id } = req.params
+  const { likes, title, author, url } = req.body
+  if (!id) {
+    return res.status(400).end()
+  }
+  const prevBlog = await Blog.findById(id)
+  const blogToUpdate = {
+    author: author ?? prevBlog.author,
+    title: title ?? prevBlog.title,
+    url: url ?? prevBlog.url,
+    likes: likes > 0 ? likes : prevBlog.likes,
+  }
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blogToUpdate, { new: true })
+  return res.status(200).json(updatedBlog)
+}

@@ -75,15 +75,15 @@ beforeEach(async () => {
 //     expect(resultBlog.body).toEqual(processedBlogToView)
 //   })
 
-//   test('a blog can be deleted', async () => {
-//     const blogsAtStart = await blogsInDB()
-//     const blogToDelete = blogsAtStart[0]
-//     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
-//     const blogsAtEnd = await blogsInDB()
-//     expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
-//     const contents = blogsAtEnd.map((b) => b.title)
-//     expect(contents).not.toContain(blogToDelete.title)
-//   })
+// test('a blog can be deleted', async () => {
+//   const blogsAtStart = await blogsInDB()
+//   const blogToDelete = blogsAtStart[0]
+//   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+//   const blogsAtEnd = await blogsInDB()
+//   expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
+//   const contents = blogsAtEnd.map((b) => b.title)
+//   expect(contents).not.toContain(blogToDelete.title)
+// })
 // })
 
 describe('Exercises 4.8-4.12', () => {
@@ -116,7 +116,6 @@ describe('Exercises 4.8-4.12', () => {
   })
 
   test('4.11: Verifies that if the likes property is missing from the request, it will default to the value 0.', async () => {
-    //
     const newBlog = { title: 'Post with no likes prop', author: 'tester', url: 'jest.com' }
     const response = await api
       .post('/api/blogs')
@@ -131,6 +130,30 @@ describe('Exercises 4.8-4.12', () => {
     await api.post('/api/blogs').send(badBlog).expect(400)
   })
   // test('4.8: Blog list tests, step1', async () => {})
+})
+
+describe('Exercises 4.13-4.14', () => {
+  test('deletes a single blog post', async () => {
+    const blogsAtStart = await blogsInDB()
+    const blogToDelete = blogsAtStart[0]
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    const blogsAtEnd = await blogsInDB()
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
+    const contents = blogsAtEnd.map((b) => b.title)
+    expect(contents).not.toContain(blogToDelete.title)
+  })
+
+  test('updates a single blog post', async () => {
+    //
+    const blogAtStart = await blogsInDB()
+    const prevBlog = blogAtStart[0]
+    const blogToUpdate = { title: 'updated correctly', likes: 100 }
+    const response = await api.put(`/api/blogs/${prevBlog.id}`).send(blogToUpdate).expect(200)
+    const updatedBlog = response.body
+    console.log(updatedBlog)
+    expect(updatedBlog.title).toEqual('updated correctly')
+    expect(updatedBlog.likes).toEqual(100)
+  })
 })
 
 afterAll(() => {
