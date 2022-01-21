@@ -1,4 +1,5 @@
 const { Blog } = require('../models/blogSchema.js')
+const { User } = require('../models/userSchema.js')
 const logger = require('../utils/log/logger.js')
 
 module.exports.allBlogs = async (req, res, next) => {
@@ -11,14 +12,17 @@ module.exports.allBlogs = async (req, res, next) => {
   }
 }
 module.exports.newBlog = async (req, res, next) => {
-  const { title, author, url, likes } = req.body
-  if (!title || !author || !url) {
+  const { title, author, url, likes, userId } = req.body
+  if (!title || !author || !url || !userId) {
     return res.status(400).end()
   }
   try {
+    const user = await User.findById(userId)
     let defaultLikes = likes > 0 ? likes : 0
-    const blog = new Blog({ title, author, url, likes: defaultLikes })
+    const blog = new Blog({ title, author, url, likes: defaultLikes, user: user._id })
     await blog.save()
+    user.blogs = user.blogs.concat(blog._id)
+    await user.save()
     return res.status(201).json(blog)
   } catch (err) {
     logger.info(err)
