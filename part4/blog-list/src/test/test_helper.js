@@ -1,4 +1,6 @@
 const { Blog } = require('../models/blogSchema')
+const { User } = require('../models/userSchema')
+
 const initialBlogs = [
   { title: 'testing', author: 'david', url: 'www.reddit.com/myPost', likes: 5 },
   { title: 'Sample', author: 'Jhon', url: 'www.reddit.com/hisPost', likes: 10 },
@@ -16,4 +18,9 @@ const blogsInDB = async () => {
   return blogs.map((b) => b.toJSON())
 }
 
-module.exports = { initialBlogs, nonExistingId, blogsInDB }
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map((u) => u.toJSON())
+}
+
+module.exports = { initialBlogs, nonExistingId, blogsInDB, usersInDb }
