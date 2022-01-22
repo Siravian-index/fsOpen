@@ -7,6 +7,7 @@ require('dotenv').config()
 const config = require('./utils/config/mongDB')
 const { blogRouter } = require('./routes/blogRoutes')
 const { userRouter } = require('./routes/userRoutes')
+const { loginRouter } = require('./routes/loginRouter')
 
 config.connectDb()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 // routes
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 // errors
 app.use(unknownEndpoint)
