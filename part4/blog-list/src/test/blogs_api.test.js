@@ -78,7 +78,6 @@ describe('Exercises 4.13-4.14', () => {
     const blogToUpdate = { title: 'updated correctly', likes: 100 }
     const response = await api.put(`/api/blogs/${prevBlog.id}`).send(blogToUpdate).expect(200)
     const updatedBlog = response.body
-    console.log(updatedBlog)
     expect(updatedBlog.title).toEqual('updated correctly')
     expect(updatedBlog.likes).toEqual(100)
   })

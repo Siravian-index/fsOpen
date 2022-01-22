@@ -4,7 +4,7 @@ const logger = require('../utils/log/logger.js')
 
 module.exports.allBlogs = async (req, res, next) => {
   try {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     return res.json(blogs)
   } catch (err) {
     logger.info(err)
