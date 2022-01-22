@@ -1,5 +1,7 @@
 const { Blog } = require('../models/blogSchema.js')
 const { User } = require('../models/userSchema.js')
+const jwt = require('jsonwebtoken')
+const { getTokenFrom } = require('../utils/middleware/blogMiddleware')
 const logger = require('../utils/log/logger.js')
 
 module.exports.allBlogs = async (req, res, next) => {
@@ -12,18 +14,23 @@ module.exports.allBlogs = async (req, res, next) => {
   }
 }
 module.exports.newBlog = async (req, res, next) => {
-  const { title, author, url, likes, userId } = req.body
-  if (!title || !author || !url || !userId) {
+  const { title, author, url, likes } = req.body
+  const token = getTokenFrom(req)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!title || !author || !url) {
     return res.status(400).end()
   }
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(decodedToken.id)
     let defaultLikes = likes > 0 ? likes : 0
     const blog = new Blog({ title, author, url, likes: defaultLikes, user: user._id })
-    await blog.save()
-    user.blogs = user.blogs.concat(blog._id)
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-    return res.status(201).json(blog)
+    return res.status(201).json(savedBlog)
   } catch (err) {
     logger.info(err)
     next(err)

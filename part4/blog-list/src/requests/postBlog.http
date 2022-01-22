@@ -1,11 +1,12 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhdmluY2hpIiwiaWQiOiI2MWViM2NjZGU4MTc2NDk4NzkyOWQ1MDIiLCJpYXQiOjE2NDI4ODIzNTh9.WICvycdynCNNlFXKhcYEzC3UcW6MazD_oyYIqDu5fdI
 
 {   
-    "title": "now with user x2",
-    "author": "me",
-    "url": "reddit.com/hoster",
-    "likes": 100,
+    "title": "jwt auth",
+    "author": "david",
+    "url": "auth007.com",
+    "likes": 78,
     "userId": "61eb3ccde81764987929d502"
 }
 ###
