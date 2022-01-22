@@ -32,7 +32,6 @@ module.exports.newBlog = async (req, res, next) => {
     await user.save()
     return res.status(201).json(savedBlog)
   } catch (err) {
-    logger.info(err)
     next(err)
   }
 }
@@ -48,7 +47,6 @@ module.exports.oneBlog = async (req, res, next) => {
     }
     return res.status(404).end()
   } catch (err) {
-    logger.error(err)
     next(err)
   }
 }
