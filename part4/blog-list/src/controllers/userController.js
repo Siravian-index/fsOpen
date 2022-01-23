@@ -7,7 +7,6 @@ module.exports.getUsers = async (req, res, next) => {
     const users = await User.find({}).populate('blogs', { title: 1 })
     return res.status(200).json(users)
   } catch (err) {
-    logger.error(err)
     next(err)
   }
 }
@@ -20,9 +19,11 @@ module.exports.getUsers = async (req, res, next) => {
 
 module.exports.postUser = async (req, res, next) => {
   const { username, name, password } = req.body
+  // create a middleware for this type of validation
   if (!username || !name || !password) {
     return res.status(400).end()
   }
+  // ----------------
   const saltRounds = 10
   try {
     const passwordHash = await bcrypt.hash(password, saltRounds)
@@ -30,7 +31,6 @@ module.exports.postUser = async (req, res, next) => {
     const savedUser = await newUser.save()
     return res.status(201).json(savedUser)
   } catch (err) {
-    logger.error(err)
     next(err)
   }
 }
