@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }],
 })
 
-userSchema.plugin(uniqueValidator)
+// userSchema.plugin(uniqueValidator)
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {

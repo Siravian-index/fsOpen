@@ -9,13 +9,15 @@ module.exports.allBlogs = async (req, res, next) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     return res.json(blogs)
   } catch (err) {
-    logger.info(err)
     next(err)
   }
 }
 module.exports.newBlog = async (req, res, next) => {
   const { title, author, url, likes } = req.body
-  const token = getTokenFrom(req)
+  const { token } = req
+  console.log(token)
+  // I need to make this a middleware
+  // const token = getTokenFrom(req)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!title || !author || !url) {
     return res.status(400).end()
