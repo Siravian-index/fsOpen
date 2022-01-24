@@ -52,16 +52,17 @@ module.exports.oneBlog = async (req, res, next) => {
 // here we are using express-async-errors library which
 // let us eliminate try/catch and still work on exceptions
 module.exports.deleteBlog = async (req, res) => {
-  const { id } = req.params
   // extract this to a middleware
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
+  // const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  // if (!decodedToken.id) {
+  //   return res.status(401).json({ error: 'token missing or invalid' })
+  // }
+  // const user = await User.findById(decodedToken.id)
+  const { id } = req.params
   if (!id) {
     return res.status(400).end()
   }
-  const user = await User.findById(decodedToken.id)
+  const user = req.user
   const blogToDelete = await Blog.findById(id)
   if (user._id.toString() === blogToDelete.user.toString()) {
     await Blog.findByIdAndDelete(id)
