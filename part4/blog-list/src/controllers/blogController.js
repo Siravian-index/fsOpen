@@ -1,31 +1,31 @@
 const { Blog } = require('../models/blogSchema.js')
 const { User } = require('../models/userSchema.js')
+const jwt = require('jsonwebtoken')
 const logger = require('../utils/log/logger.js')
+const CustomError = require('../utils/middleware/error/CustomError.js')
 
 module.exports.allBlogs = async (req, res, next) => {
   try {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     return res.json(blogs)
   } catch (err) {
-    logger.info(err)
     next(err)
   }
 }
 module.exports.newBlog = async (req, res, next) => {
-  const { title, author, url, likes, userId } = req.body
-  if (!title || !author || !url || !userId) {
+  const { title, author, url, likes } = req.body
+  if (!title || !author || !url) {
     return res.status(400).end()
   }
   try {
-    const user = await User.findById(userId)
+    const user = req.user
     let defaultLikes = likes > 0 ? likes : 0
     const blog = new Blog({ title, author, url, likes: defaultLikes, user: user._id })
-    await blog.save()
-    user.blogs = user.blogs.concat(blog._id)
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-    return res.status(201).json(blog)
+    return res.status(201).json(savedBlog)
   } catch (err) {
-    logger.info(err)
     next(err)
   }
 }
@@ -41,7 +41,6 @@ module.exports.oneBlog = async (req, res, next) => {
     }
     return res.status(404).end()
   } catch (err) {
-    logger.error(err)
     next(err)
   }
 }
@@ -53,9 +52,13 @@ module.exports.deleteBlog = async (req, res) => {
   if (!id) {
     return res.status(400).end()
   }
-  // I am not a big fan of removing try/catch, but it is just to try the library
-  await Blog.findByIdAndDelete(id)
-  return res.status(204).end()
+  const user = req.user
+  const blogToDelete = await Blog.findById(id)
+  if (user._id.toString() === blogToDelete.user.toString()) {
+    await Blog.findByIdAndDelete(id)
+    return res.status(204).end()
+  }
+  throw new CustomError('your are not the owner of this blog', 401)
 }
 
 // I did not use try/catch here either. I must admit it looks like more stylish,
