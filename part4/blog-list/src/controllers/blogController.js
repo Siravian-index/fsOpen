@@ -14,15 +14,11 @@ module.exports.allBlogs = async (req, res, next) => {
 }
 module.exports.newBlog = async (req, res, next) => {
   const { title, author, url, likes } = req.body
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
   if (!title || !author || !url) {
     return res.status(400).end()
   }
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
   try {
-    const user = await User.findById(decodedToken.id)
+    const user = req.user
     let defaultLikes = likes > 0 ? likes : 0
     const blog = new Blog({ title, author, url, likes: defaultLikes, user: user._id })
     const savedBlog = await blog.save()
@@ -52,12 +48,6 @@ module.exports.oneBlog = async (req, res, next) => {
 // here we are using express-async-errors library which
 // let us eliminate try/catch and still work on exceptions
 module.exports.deleteBlog = async (req, res) => {
-  // extract this to a middleware
-  // const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  // if (!decodedToken.id) {
-  //   return res.status(401).json({ error: 'token missing or invalid' })
-  // }
-  // const user = await User.findById(decodedToken.id)
   const { id } = req.params
   if (!id) {
     return res.status(400).end()

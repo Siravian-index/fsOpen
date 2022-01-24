@@ -1,4 +1,5 @@
 const { User } = require('../../models/userSchema')
+const jwt = require('jsonwebtoken')
 
 module.exports.parseTokenFromHeader = (req, res, next) => {
   const authorization = req.get('authorization')
