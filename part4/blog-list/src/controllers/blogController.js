@@ -1,8 +1,8 @@
 const { Blog } = require('../models/blogSchema.js')
 const { User } = require('../models/userSchema.js')
 const jwt = require('jsonwebtoken')
-const { getTokenFrom } = require('../utils/middleware/blogMiddleware')
 const logger = require('../utils/log/logger.js')
+const CustomError = require('../utils/middleware/error/CustomError.js')
 
 module.exports.allBlogs = async (req, res, next) => {
   try {
@@ -14,11 +14,7 @@ module.exports.allBlogs = async (req, res, next) => {
 }
 module.exports.newBlog = async (req, res, next) => {
   const { title, author, url, likes } = req.body
-  const { token } = req
-  console.log(token)
-  // I need to make this a middleware
-  // const token = getTokenFrom(req)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
   if (!title || !author || !url) {
     return res.status(400).end()
   }
@@ -57,12 +53,21 @@ module.exports.oneBlog = async (req, res, next) => {
 // let us eliminate try/catch and still work on exceptions
 module.exports.deleteBlog = async (req, res) => {
   const { id } = req.params
+  // extract this to a middleware
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
   if (!id) {
     return res.status(400).end()
   }
-  // I am not a big fan of removing try/catch, but it is just to try the library
-  await Blog.findByIdAndDelete(id)
-  return res.status(204).end()
+  const user = await User.findById(decodedToken.id)
+  const blogToDelete = await Blog.findById(id)
+  if (user._id.toString() === blogToDelete.user.toString()) {
+    await Blog.findByIdAndDelete(id)
+    return res.status(204).end()
+  }
+  throw new CustomError('your are not the owner of this blog', 401)
 }
 
 // I did not use try/catch here either. I must admit it looks like more stylish,
