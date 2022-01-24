@@ -22,7 +22,7 @@ module.exports.verifyNewUserData = async (req, res, next) => {
   }
   const isRegistered = await User.exists({ username })
   if (isRegistered) {
-    throw new CustomError('username already registered')
+    throw new CustomError('`username` to be unique')
   }
   next()
 }

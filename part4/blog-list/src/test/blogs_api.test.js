@@ -3,10 +3,12 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const { Blog } = require('../models/blogSchema')
-const { initialBlogs, nonExistingId, blogsInDB } = require('./test_helper')
+const { User } = require('../models/userSchema')
+const { initialBlogs, blogsInDB } = require('./test_helper')
 
 // fills the DB with two obj before the test run
 beforeEach(async () => {
+  await User.deleteMany({})
   await Blog.deleteMany({})
   for (let blog of initialBlogs) {
     let blogObj = new Blog(blog)
@@ -29,10 +31,15 @@ describe('Exercises 4.8-4.12', () => {
       expect(blog.id).toBeDefined()
     }
   })
-  test('4.10: verifies that making an HTTP POST request to the /api/blogs url successfully creates a new blog post.', async () => {
+  test.only('4.10: Verifies that making an HTTP POST request to the /api/blogs url successfully creates a new blog post.', async () => {
     const newBlog = { title: 'test with jest', author: 'jester', url: 'jest.com' }
+    const newUser = { name: 'tester', username: 'jester', password: 'testing123' }
+    await api.post('/api/users').send(newUser).expect(201)
+    const login = await api.post('/api/login').send({ username: 'jester', password: 'testing123' }).expect(200)
+    // console.log(login);
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${login.body.token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/i)
@@ -53,11 +60,10 @@ describe('Exercises 4.8-4.12', () => {
     const blog = response.body
     expect(blog.likes).toEqual(0)
   })
-  test('4.8: verifies that if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request.', async () => {
+  test('4.12: verifies that if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request.', async () => {
     const badBlog = { url: 'jest.com' }
     await api.post('/api/blogs').send(badBlog).expect(400)
   })
-  // test('4.8: Blog list tests, step1', async () => {})
 })
 
 describe('Exercises 4.13-4.14', () => {

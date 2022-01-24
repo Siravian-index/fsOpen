@@ -1,5 +1,4 @@
 const { User } = require('../models/userSchema')
-const logger = require('../utils/log/logger.js')
 const bcrypt = require('bcrypt')
 
 module.exports.getUsers = async (req, res, next) => {
@@ -11,19 +10,8 @@ module.exports.getUsers = async (req, res, next) => {
   }
 }
 
-// module.exports.getUser = (req, res) => {
-// const {id} = req.params
-
-//   //
-// }
-
 module.exports.postUser = async (req, res, next) => {
   const { username, name, password } = req.body
-  // create a middleware for this type of validation
-  if (!username || !name || !password) {
-    return res.status(400).end()
-  }
-  // ----------------
   const saltRounds = 10
   try {
     const passwordHash = await bcrypt.hash(password, saltRounds)
@@ -34,11 +22,3 @@ module.exports.postUser = async (req, res, next) => {
     next(err)
   }
 }
-
-// module.exports.deleteUser = (req, res) => {
-//   //
-// }
-
-// module.exports.putUser = (req, res) => {
-//   //
-// }

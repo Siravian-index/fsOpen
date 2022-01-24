@@ -4,7 +4,7 @@ const supertest = require('supertest')
 const { User } = require('../models/userSchema')
 const app = require('../app')
 const api = supertest(app)
-const { initialBlogs, nonExistingId, blogsInDB, usersInDb } = require('./test_helper')
+const { usersInDb } = require('./test_helper')
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
