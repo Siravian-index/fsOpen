@@ -2,6 +2,16 @@ import axios from 'axios'
 const baseUrl = '/api/blogs'
 
 export const getAll = async () => {
-  const res = await axios.get(baseUrl)
-  return res.data
+  try {
+    const res = await axios.get(baseUrl)
+    if (res.status === 200) {
+      return res.data
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const createOne = async (blog, token) => {
+  // axios post
 }

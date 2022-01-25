@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import CreateBlog from './components/CreateBlog'
 import Login from './components/Login'
+import UserDetails from './components/UserDetails'
 import * as blogService from './services/blogs'
 import * as loginService from './services/login'
 import * as localStorageUtility from './utils/localStorageUtility'
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const [credentials, setCredentials] = useState({ username: 'davinchi', password: 'testing123' })
   const [user, setUser] = useState(null)
+  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
 
   useEffect(() => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
@@ -36,6 +39,15 @@ const App = () => {
     }
   }
 
+  const handleLogout = (e) => {
+    localStorageUtility.deleteFromLocalStorage('currentUser')
+    setUser(null)
+  }
+
+  const handleNewBlog = (e, newBlog) => {
+    e.preventDefault()
+  }
+
   return (
     <>
       {!user && (
@@ -47,6 +59,8 @@ const App = () => {
       {user && (
         <div>
           <h2>blogs</h2>
+          <UserDetails user={user} logout={handleLogout} />
+          <CreateBlog blog={{ newBlog, setNewBlog, handleNewBlog }} />
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
