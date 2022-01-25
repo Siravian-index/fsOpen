@@ -13,5 +13,13 @@ export const getAll = async () => {
 }
 
 export const createOne = async (blog, token) => {
-  // axios post
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+  try {
+    const res = await axios.post(baseUrl, blog, config)
+    if (res.status === 201) {
+      return res.data
+    }
+  } catch (err) {
+    console.log(err)
+  }
 }

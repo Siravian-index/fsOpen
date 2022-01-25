@@ -1,19 +1,32 @@
-const Login = ({ login }) => {
+import Notification from './Notification'
+
+const Login = ({ login, notification }) => {
   const { credentials, setCredentials, handleLogin } = login
   return (
     <div>
-      <h3>log in to application</h3>
+      <h2>log in to application</h2>
+      <Notification config={notification} />
       <form onSubmit={(e) => handleLogin(e, credentials)}>
-        <input
-          type='text'
-          value={credentials.username}
-          onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-        />
-        <input
-          type='password'
-          value={credentials.password}
-          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-        />
+        <div>
+          <label>
+            username:
+            <input
+              type='text'
+              value={credentials.username}
+              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            password:
+            <input
+              type='password'
+              value={credentials.password}
+              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+            />
+          </label>
+        </div>
         <button type='submit'>Login</button>
       </form>
     </div>

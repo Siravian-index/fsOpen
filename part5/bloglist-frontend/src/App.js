@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import CreateBlog from './components/CreateBlog'
 import Login from './components/Login'
+import Notification from './components/Notification'
 import UserDetails from './components/UserDetails'
 import * as blogService from './services/blogs'
 import * as loginService from './services/login'
 import * as localStorageUtility from './utils/localStorageUtility'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [credentials, setCredentials] = useState({ username: 'davinchi', password: 'testing123' })
+  const [credentials, setCredentials] = useState({ username: '', password: '' })
   const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [notificationConfig, setNotificationConfig] = useState({ type: '' })
 
   useEffect(() => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
@@ -26,6 +29,19 @@ const App = () => {
     return () => (mounted = false)
   }, [])
 
+  useEffect(() => {
+    let mounted = true
+    let id = setTimeout(() => {
+      if (mounted) {
+        setNotificationConfig({ type: '' })
+      }
+    }, 5000)
+    return () => {
+      mounted = false
+      clearTimeout(id)
+    }
+  }, [notificationConfig.type])
+
   const handleLogin = async (e, credentials) => {
     e.preventDefault()
     const userData = await loginService.login(credentials)
@@ -34,31 +50,44 @@ const App = () => {
       localStorageUtility.saveToLocalStorage('currentUser', userData)
       setCredentials({ username: '', password: '' })
     } else {
-      // make a banner
+      //banner
+      setNotificationConfig({ type: 'loginError' })
       console.log('user not found')
     }
   }
 
-  const handleLogout = (e) => {
+  const handleLogout = () => {
     localStorageUtility.deleteFromLocalStorage('currentUser')
     setUser(null)
   }
 
-  const handleNewBlog = (e, newBlog) => {
+  const handleNewBlog = async (e, newBlog) => {
     e.preventDefault()
+    const blog = await blogService.createOne(newBlog, user.token)
+    if (blog) {
+      setBlogs((prev) => [...prev, blog])
+      setNewBlog({ title: '', author: '', url: '' })
+      // banner
+      setNotificationConfig({ type: 'blogSuccess', blog })
+    } else {
+      // banner
+      setNotificationConfig({ type: 'blogError' })
+      console.log('bad request')
+    }
   }
 
   return (
     <>
       {!user && (
         <div>
-          <Login login={{ credentials, setCredentials, handleLogin }} />
+          <Login login={{ credentials, setCredentials, handleLogin }} notification={notificationConfig} />
         </div>
       )}
 
       {user && (
         <div>
           <h2>blogs</h2>
+          <Notification config={notificationConfig} />
           <UserDetails user={user} logout={handleLogout} />
           <CreateBlog blog={{ newBlog, setNewBlog, handleNewBlog }} />
           {blogs.map((blog) => (

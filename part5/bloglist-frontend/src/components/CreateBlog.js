@@ -11,6 +11,7 @@ const CreateBlog = ({ blog }) => {
               value={newBlog.title}
               onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
               type='text'
+              required
             />
           </label>
         </div>
@@ -21,13 +22,19 @@ const CreateBlog = ({ blog }) => {
               value={newBlog.author}
               onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
               type='text'
+              required
             />
           </label>
         </div>
         <div>
           <label>
             url:
-            <input value={newBlog.url} onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })} type='text' />
+            <input
+              value={newBlog.url}
+              onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
+              type='text'
+              required
+            />
           </label>
         </div>
         <button type='submit'>create</button>
