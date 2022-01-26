@@ -1,7 +1,23 @@
 import Notification from './Notification'
+import { useState } from 'react'
+import * as loginService from '../services/login'
+import * as localStorageUtility from '../utils/localStorageUtility'
 
-const Login = ({ login, notification }) => {
-  const { credentials, setCredentials, handleLogin } = login
+const Login = ({ notification, setUser, setNotificationConfig }) => {
+  const [credentials, setCredentials] = useState({ username: '', password: '' })
+
+  const handleLogin = async (e, credentials) => {
+    e.preventDefault()
+    const userData = await loginService.login(credentials)
+    if (userData) {
+      setUser(userData)
+      localStorageUtility.saveToLocalStorage('currentUser', userData)
+      setCredentials({ username: '', password: '' })
+    } else {
+      setNotificationConfig({ type: 'loginError' })
+      console.log('user not found')
+    }
+  }
   return (
     <div>
       <h2>log in to application</h2>
