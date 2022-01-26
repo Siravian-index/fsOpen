@@ -14,7 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [notificationConfig, setNotificationConfig] = useState({ type: '' })
-
+  const [showBlogForm, setShowBlogForm] = useState(false)
   useEffect(() => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
     populateBlogs()
@@ -69,6 +69,8 @@ const App = () => {
       setNewBlog({ title: '', author: '', url: '' })
       // banner
       setNotificationConfig({ type: 'blogSuccess', blog })
+      // hide form
+      setShowBlogForm(!showBlogForm)
     } else {
       // banner
       setNotificationConfig({ type: 'blogError' })
@@ -89,7 +91,10 @@ const App = () => {
           <h2>blogs</h2>
           <Notification config={notificationConfig} />
           <UserDetails user={user} logout={handleLogout} />
-          <CreateBlog blog={{ newBlog, setNewBlog, handleNewBlog }} />
+          {showBlogForm && <CreateBlog blog={{ newBlog, setNewBlog, handleNewBlog }} />}
+          <div>
+            <button onClick={() => setShowBlogForm(!showBlogForm)}>{showBlogForm ? 'cancel' : 'open'}</button>
+          </div>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}

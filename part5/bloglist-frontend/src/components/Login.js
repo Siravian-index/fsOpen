@@ -14,6 +14,7 @@ const Login = ({ login, notification }) => {
               type='text'
               value={credentials.username}
               onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+              required
             />
           </label>
         </div>
@@ -24,6 +25,7 @@ const Login = ({ login, notification }) => {
               type='password'
               value={credentials.password}
               onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              required
             />
           </label>
         </div>
