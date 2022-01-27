@@ -1,4 +1,6 @@
 import '../index.css'
+import React from 'react'
+
 const Notification = ({ config }) => {
   const { type, blog } = config
   const blogSuccess = (blog) => {

@@ -15,7 +15,6 @@ const App = () => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
     populateBlogs()
   }, [])
-
   useEffect(() => {
     let mounted = true
     const userFound = localStorageUtility.parseFromLocalStorage('currentUser')

@@ -1,4 +1,5 @@
 import Blog from './Blog'
+import React from 'react'
 
 const BlogList = ({ blogs, setBlogs, user }) => {
   // sort by the number of likes

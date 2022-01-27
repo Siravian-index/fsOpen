@@ -1,4 +1,5 @@
 import * as loginService from '../services/login'
+import React from 'react'
 
 const UserDetails = ({ user, setUser }) => {
   return (
