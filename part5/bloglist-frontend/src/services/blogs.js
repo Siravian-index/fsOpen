@@ -23,3 +23,15 @@ export const createOne = async (blog, token) => {
     console.log(err)
   }
 }
+
+export const editBlog = async (blog, id, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+  try {
+    const res = await axios.put(`${baseUrl}/${id}`, blog, config)
+    if (res.status === 200) {
+      return res.data
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

@@ -4,7 +4,9 @@ const UserDetails = ({ user, setUser }) => {
   return (
     <>
       <div>
-        <span>{user.name} logged in</span> <button onClick={() => loginService.logout(setUser)}>logout</button>
+        <p>
+          {user.username} logged in <button onClick={() => loginService.logout(setUser)}>logout</button>
+        </p>
       </div>
     </>
   )

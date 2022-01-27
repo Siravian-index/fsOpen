@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import * as blogService from '../services/blogs'
 
-const CreateBlog = ({ user, setBlogs, setNotificationConfig, setShowBlogForm, showBlogForm }) => {
+const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [showBlogForm, setShowBlogForm] = useState(false)
 
   const handleNewBlog = async (e, newBlog) => {
     e.preventDefault()
@@ -62,7 +63,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig, setShowBlogForm, sh
         </div>
       )}
       <div>
-        <button onClick={() => setShowBlogForm(!showBlogForm)}>{showBlogForm ? 'cancel' : 'open'}</button>
+        <button onClick={() => setShowBlogForm(!showBlogForm)}>{showBlogForm ? 'cancel' : 'create a new blog'}</button>
       </div>
     </>
   )
