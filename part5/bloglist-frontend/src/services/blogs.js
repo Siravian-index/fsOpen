@@ -35,3 +35,15 @@ export const editBlog = async (blog, id, token) => {
     console.log(err)
   }
 }
+
+export const deleteBlog = async (id, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+  try {
+    const res = await axios.delete(`${baseUrl}/${id}`, config)
+    if (res.status === 204) {
+      return 'blog deleted'
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

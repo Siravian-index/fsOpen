@@ -19,7 +19,14 @@ const Blog = ({ blog, setBlogs, user }) => {
   }
 
   const handleDelete = async (blog) => {
-    //
+    const c = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if (c) {
+      const res = await blogService.deleteBlog(blog.id, user.token)
+      if (res) {
+        // set banner
+        setBlogs((prev) => prev.filter((b) => b.id !== blog.id))
+      }
+    }
   }
 
   const blogStyle = {
@@ -43,7 +50,7 @@ const Blog = ({ blog, setBlogs, user }) => {
             </div>
             <div>{blog.user.username}</div>
             <div>
-              <button onClick={() => handleDelete(blog)}>delete</button>
+              {user.username === blog.user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
             </div>
           </div>
         )}
