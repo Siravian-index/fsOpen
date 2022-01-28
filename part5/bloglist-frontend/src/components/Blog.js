@@ -59,8 +59,9 @@ const Blog = ({ blog, setBlogs, user }) => {
             </div>
             <div>{blog.user?.name || postedBy}</div>
             <div>
-              {user.username === blog.user?.username ||
-                (username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>)}
+              {(user.username === blog.user?.username || username === user.username) && (
+                <button onClick={() => handleDelete(blog)}>delete</button>
+              )}
             </div>
           </div>
         )}
