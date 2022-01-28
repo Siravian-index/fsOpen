@@ -4,18 +4,24 @@ import * as blogService from '../services/blogs'
 
 const Blog = ({ blog, setBlogs, user }) => {
   const [showExtraInfo, setShowExtraInfo] = useState(false)
+  const [postedBy, setPostedBy] = useState('')
+  const [username, setUsername] = useState('')
+
   const handleShow = () => {
     setShowExtraInfo(!showExtraInfo)
   }
   const handleLike = async (blog) => {
+    const { id, author, url, title } = blog
     const baseUpdate = {
-      user: blog.user.id,
-      likes: ++blog.likes,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
+      user: blog.user?.id || blog.user,
+      likes: blog.likes + 1,
+      author,
+      title,
+      url,
     }
-    const updatedBlog = await blogService.editBlog(baseUpdate, blog.id, user.token)
+    setPostedBy(postedBy || blog.user?.name)
+    setUsername(username || blog.user?.username)
+    const updatedBlog = await blogService.editBlog(baseUpdate, id)
     await setBlogs((prev) => prev.map((b) => (b.id !== blog.id ? b : updatedBlog)))
   }
 
@@ -23,10 +29,12 @@ const Blog = ({ blog, setBlogs, user }) => {
     const c = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
     if (c) {
       const res = await blogService.deleteBlog(blog.id, user.token)
+      console.log(res)
       if (res) {
-        // set banner
+        // set success banner
         setBlogs((prev) => prev.filter((b) => b.id !== blog.id))
       }
+      // set error banner
     }
   }
 
@@ -39,19 +47,20 @@ const Blog = ({ blog, setBlogs, user }) => {
   }
   return (
     <>
-      <div style={blogStyle}>
-        <span>
+      <div style={blogStyle} className='blog'>
+        <span className='title-author'>
           {blog.title} {blog.author} <button onClick={handleShow}>{showExtraInfo ? 'hide' : 'view'}</button>
         </span>
         {showExtraInfo && (
-          <div>
+          <div className='extra-content'>
             <div>{blog.url}</div>
             <div>
               likes {blog.likes} <button onClick={() => handleLike(blog)}>like</button>
             </div>
-            <div>{blog.user.username}</div>
+            <div>{blog.user?.name || postedBy}</div>
             <div>
-              {user.username === blog.user.username && <button onClick={() => handleDelete(blog)}>delete</button>}
+              {user.username === blog.user?.username ||
+                (username === user.username && <button onClick={() => handleDelete(blog)}>delete</button>)}
             </div>
           </div>
         )}
@@ -63,7 +72,7 @@ const Blog = ({ blog, setBlogs, user }) => {
 export default Blog
 
 Blog.propTypes = {
-  blog: PropTypes.array.isRequired,
+  blog: PropTypes.object.isRequired,
   setBlogs: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 }

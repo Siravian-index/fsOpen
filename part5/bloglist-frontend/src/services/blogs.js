@@ -24,10 +24,9 @@ export const createOne = async (blog, token) => {
   }
 }
 
-export const editBlog = async (blog, id, token) => {
-  const config = { headers: { Authorization: `Bearer ${token}` } }
+export const editBlog = async (blog, id) => {
   try {
-    const res = await axios.put(`${baseUrl}/${id}`, blog, config)
+    const res = await axios.put(`${baseUrl}/${id}`, blog)
     if (res.status === 200) {
       return res.data
     }

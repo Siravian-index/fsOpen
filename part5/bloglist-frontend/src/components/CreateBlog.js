@@ -29,6 +29,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
               <label>
                 title:
                 <input
+                  placeholder='title'
                   value={newBlog.title}
                   onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
                   type='text'
@@ -40,6 +41,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
               <label>
                 author:
                 <input
+                  placeholder='author'
                   value={newBlog.author}
                   onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
                   type='text'
@@ -51,6 +53,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
               <label>
                 url:
                 <input
+                  placeholder='url'
                   value={newBlog.url}
                   onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
                   type='text'
