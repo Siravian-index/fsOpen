@@ -55,12 +55,17 @@ const Blog = ({ blog, setBlogs, user }) => {
           <div className='extra-content'>
             <div>{blog.url}</div>
             <div>
-              likes {blog.likes} <button onClick={() => handleLike(blog)}>like</button>
+              likes {blog.likes}{' '}
+              <button id='like-button' onClick={() => handleLike(blog)}>
+                like
+              </button>
             </div>
             <div>{blog.user?.name || postedBy}</div>
             <div>
               {(user.username === blog.user?.username || username === user.username) && (
-                <button onClick={() => handleDelete(blog)}>delete</button>
+                <button id='delete-button' onClick={() => handleDelete(blog)}>
+                  delete
+                </button>
               )}
             </div>
           </div>

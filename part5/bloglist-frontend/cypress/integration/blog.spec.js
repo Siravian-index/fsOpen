@@ -55,5 +55,19 @@ describe('blog app', function () {
         cy.contains(blog.author)
       })
     })
+
+    describe('a blog exists', function () {
+      beforeEach(function () {
+        const blog = {
+          title: 'commands are awesome',
+          author: 'cypress',
+          url: 'https://docs.cypress.io/api/cypress-api/custom-commands',
+        }
+        cy.createBlog(blog)
+      })
+      it('note is on the DOM', function () {
+        cy.contains('commands are awesome')
+      })
+    })
   })
 })
