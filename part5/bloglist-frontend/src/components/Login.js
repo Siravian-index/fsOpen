@@ -12,7 +12,7 @@ const Login = ({ notification, setUser, setNotificationConfig }) => {
     if (userData) {
       setUser(userData)
       localStorageUtility.saveToLocalStorage('currentUser', userData)
-      setCredentials({ username: '', password: '' })
+      // setCredentials({ username: '', password: '' })
     } else {
       setNotificationConfig({ type: 'loginError' })
       console.log('user not found')
