@@ -30,6 +30,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
                 title:
                 <input
                   placeholder='title'
+                  id='title'
                   value={newBlog.title}
                   onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
                   type='text'
@@ -42,6 +43,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
                 author:
                 <input
                   placeholder='author'
+                  id='author'
                   value={newBlog.author}
                   onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
                   type='text'
@@ -54,6 +56,7 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
                 url:
                 <input
                   placeholder='url'
+                  id='url'
                   value={newBlog.url}
                   onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
                   type='text'
@@ -61,12 +64,16 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
                 />
               </label>
             </div>
-            <button type='submit'>create</button>
+            <button id='submit-blog' type='submit'>
+              create
+            </button>
           </form>
         </div>
       )}
       <div>
-        <button onClick={() => setShowBlogForm(!showBlogForm)}>{showBlogForm ? 'cancel' : 'create a new blog'}</button>
+        <button id='show-form-button' onClick={() => setShowBlogForm(!showBlogForm)}>
+          {showBlogForm ? 'cancel' : 'create a new blog'}
+        </button>
       </div>
     </>
   )

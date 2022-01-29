@@ -28,6 +28,7 @@ const Login = ({ notification, setUser, setNotificationConfig }) => {
             username:
             <input
               type='text'
+              id='username'
               value={credentials.username}
               onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
               required
@@ -39,13 +40,16 @@ const Login = ({ notification, setUser, setNotificationConfig }) => {
             password:
             <input
               type='password'
+              id='password'
               value={credentials.password}
               onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
               required
             />
           </label>
         </div>
-        <button type='submit'>Login</button>
+        <button id='login-button' type='submit'>
+          Login
+        </button>
       </form>
     </div>
   )
