@@ -77,12 +77,51 @@ describe('blog app', function () {
         cy.get('html').should('not.contain', 'like or delete me')
       })
 
-      it.only('non owner user cannot delete blog post', () => {
+      it('non owner user cannot delete blog post', () => {
         cy.logout()
         cy.createUser('other', 'nonOwner', 'testing123')
         cy.login('nonOwner', 'testing123')
         cy.get('#show-more').click()
         cy.get('#delete-button').should('not.exist')
+      })
+    })
+
+    describe('blogs are in the correct order', function () {
+      beforeEach(function () {
+        const blogWithZeroLikes = {
+          title: 'zero likes',
+          author: 'cypress',
+          url: 'likes.io',
+          likes: 0,
+        }
+        const blogWithTenLikes = {
+          title: 'ten likes',
+          author: 'cypress',
+          url: 'https://docs.cypress.io/api/cypress-api/custom-commands',
+          likes: 10,
+        }
+        const blogWithTwentyLikes = {
+          title: 'twenty likes',
+          author: 'cypress',
+          url: 'https://docs.cypress.io/api/cypress-api/custom-commands',
+          likes: 20,
+        }
+        const blogWithFiftyLikes = {
+          title: 'fifty likes',
+          author: 'cypress',
+          url: 'https://docs.cypress.io/api/cypress-api/custom-commands',
+          likes: 50,
+        }
+        cy.createBlog(blogWithZeroLikes)
+        cy.createBlog(blogWithTwentyLikes)
+        cy.createBlog(blogWithFiftyLikes)
+        cy.createBlog(blogWithTenLikes)
+      })
+      it.only('blogs are ordered according to likes with the blog with the most likes being first.', function () {
+        cy.get('.blog').then(($blogs) => {
+          const firstBlog = $blogs[0]
+          cy.wrap(firstBlog).should('contain', 'fifty likes')
+        })
       })
     })
 
