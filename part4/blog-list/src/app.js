@@ -7,7 +7,7 @@ require('dotenv').config()
 const config = require('./utils/config/mongDB')
 const { blogRouter } = require('./routes/blogRoutes')
 const { userRouter } = require('./routes/userRoutes')
-const { loginRouter } = require('./routes/loginRouter')
+const { loginRouter } = require('./routes/loginRoutes')
 
 config.connectDb()
 
@@ -18,6 +18,11 @@ app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 
+// conditionally setting a route for testing only
+if (process.env.NODE_ENV === 'test') {
+  const { testRouter } = require('./routes/testRoutes')
+  app.use('/api/testing', testRouter)
+}
 // errors
 app.use(unknownEndpoint)
 app.use(errorHandler)
