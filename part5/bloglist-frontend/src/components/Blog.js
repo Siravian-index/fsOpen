@@ -49,7 +49,10 @@ const Blog = ({ blog, setBlogs, user }) => {
     <>
       <div style={blogStyle} className='blog'>
         <span className='title-author'>
-          {blog.title} {blog.author} <button onClick={handleShow}>{showExtraInfo ? 'hide' : 'view'}</button>
+          {blog.title} {blog.author}{' '}
+          <button id='show-more' onClick={handleShow}>
+            {showExtraInfo ? 'hide' : 'view'}
+          </button>
         </span>
         {showExtraInfo && (
           <div className='extra-content'>

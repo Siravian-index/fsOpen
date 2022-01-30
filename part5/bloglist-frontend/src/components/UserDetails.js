@@ -6,7 +6,10 @@ const UserDetails = ({ user, setUser }) => {
     <>
       <div>
         <p>
-          {user.username} logged in <button onClick={() => loginService.logout(setUser)}>logout</button>
+          {user.username} logged in{' '}
+          <button id='logout-button' onClick={() => loginService.logout(setUser)}>
+            logout
+          </button>
         </p>
       </div>
     </>

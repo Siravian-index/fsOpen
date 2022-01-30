@@ -1,7 +1,7 @@
 describe('blog app', function () {
   beforeEach(function () {
     cy.clearTestingDb()
-    cy.createUser()
+    cy.createUser('david', 'davinchi', 'testing123')
   })
 
   describe('login component', function () {
@@ -53,6 +53,36 @@ describe('blog app', function () {
         // check the new blog is on the page
         cy.contains(blog.title)
         cy.contains(blog.author)
+      })
+    })
+
+    describe('user actions', () => {
+      beforeEach(() => {
+        const blog = {
+          title: 'like or delete me',
+          author: 'tester',
+          url: 'https://docs.cypress.io/api/cypress-api/custom-commands',
+        }
+        cy.createBlog(blog)
+      })
+      it('checks that users can like a blog', () => {
+        cy.get('#show-more').click()
+        cy.get('#like-button').as('likeBtn').click()
+        cy.get('@likeBtn').parent().contains('likes 1')
+      })
+
+      it('owner can delete their blog posts', () => {
+        cy.get('#show-more').click()
+        cy.get('#delete-button').click()
+        cy.get('html').should('not.contain', 'like or delete me')
+      })
+
+      it.only('non owner user cannot delete blog post', () => {
+        cy.logout()
+        cy.createUser('other', 'nonOwner', 'testing123')
+        cy.login('nonOwner', 'testing123')
+        cy.get('#show-more').click()
+        cy.get('#delete-button').should('not.exist')
       })
     })
 

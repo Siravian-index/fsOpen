@@ -43,11 +43,11 @@ Cypress.Commands.add('clearTestingDb', () => {
 })
 
 // creates new user
-Cypress.Commands.add('createUser', () => {
+Cypress.Commands.add('createUser', (name, username, password) => {
   const user = {
-    name: 'david',
-    username: 'davinchi',
-    password: 'testing123',
+    name,
+    username,
+    password,
   }
   cy.request('POST', 'http://localhost:3001/api/users/', user)
   cy.visit('http://localhost:3000')
@@ -62,6 +62,11 @@ Cypress.Commands.add('login', (username, password) => {
     localStorage.setItem('currentUser', JSON.stringify(body))
     cy.visit('http://localhost:3000')
   })
+})
+
+// log out
+Cypress.Commands.add('logout', () => {
+  cy.get('#logout-button').click()
 })
 
 // create a new blog
