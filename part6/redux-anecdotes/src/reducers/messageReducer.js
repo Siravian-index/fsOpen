@@ -1,5 +1,4 @@
-const initialState = 'Popular developer anecdotes'
-// const initialState = ''
+const initialState = ''
 
 const messageReducer = (state = initialState, action) => {
   console.log('state now: ', state)
