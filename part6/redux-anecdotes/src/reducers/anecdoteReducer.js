@@ -9,6 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
+// turns anecdote (str) into a obj
 const asObject = (anecdote) => {
   return {
     content: anecdote,
@@ -19,7 +20,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
@@ -33,6 +34,9 @@ const reducer = (state = initialState, action) => {
       return state
   }
 }
+
+// -----------------------
+// actions creators
 
 export const vote = (id) => {
   return {
@@ -48,4 +52,5 @@ export const addAnecdote = (anecdote) => {
   }
 }
 
-export default reducer
+// -----------------------
+export default anecdoteReducer
