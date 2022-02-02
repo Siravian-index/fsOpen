@@ -1,24 +1,27 @@
 const initialState = 'Popular developer anecdotes'
+// const initialState = ''
 
 const messageReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
-    case 'SHOW_MESSAGE':
-      return action.msg
+    case 'ADDED_MESSAGE':
+      return `you added '${action.data.msg}'`
+    case 'VOTED_MESSAGE':
+      return `you voted '${action.data.msg}'`
     case 'HIDE_MESSAGE':
-      return action.msg
+      return action.data.msg
     default:
-      return initialState
+      return state
   }
 }
 
 // -----------------------
 // actions creators
 
-export const showMessage = (msg) => {
+export const addedMessage = (msg) => {
   return {
-    type: 'SHOW_MESSAGE',
+    type: 'ADDED_MESSAGE',
     data: { msg },
   }
 }
@@ -30,5 +33,11 @@ export const hideMessage = () => {
   }
 }
 
+export const votedMessage = (msg) => {
+  return {
+    type: 'VOTED_MESSAGE',
+    data: { msg },
+  }
+}
 // -----------------------
 export default messageReducer

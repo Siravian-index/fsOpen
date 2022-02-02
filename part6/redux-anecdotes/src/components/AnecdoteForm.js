@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
-
+import { addedMessage } from '../reducers/messageReducer'
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
   // pass a ref to the input and take the data and reset it
@@ -9,8 +9,8 @@ const AnecdoteForm = () => {
     const anecdote = e.target.anecdote.value
     e.target.anecdote.value = ''
     dispatch(addAnecdote(anecdote))
-    // dispatch showMessage
-    //
+    // dispatch addedMessage
+    dispatch(addedMessage(anecdote))
   }
   return (
     <>
