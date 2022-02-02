@@ -9,6 +9,8 @@ const AnecdoteForm = () => {
     const anecdote = e.target.anecdote.value
     e.target.anecdote.value = ''
     dispatch(addAnecdote(anecdote))
+    // dispatch showMessage
+    //
   }
   return (
     <>
