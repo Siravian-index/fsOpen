@@ -30,6 +30,9 @@ const anecdoteReducer = (state = initialState, action) => {
       return state.map((a) => (a.id !== u.id ? a : { ...u, votes: u.votes + INC }))
     case 'ADD_ANECDOTE':
       return [...state, asObject(action.data)]
+    case 'FILTER_ANECDOTES':
+      const filter = action.data.filter
+      return state.filter((a) => a.content.toLowerCase().includes(filter.toLowerCase()))
     default:
       return state
   }
@@ -52,5 +55,11 @@ export const addAnecdote = (anecdote) => {
   }
 }
 
+export const filterAnecdotes = (filter) => {
+  return {
+    type: 'FILTER_ANECDOTES',
+    data: { filter },
+  }
+}
 // -----------------------
 export default anecdoteReducer
