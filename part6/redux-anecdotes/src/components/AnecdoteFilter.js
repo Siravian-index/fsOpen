@@ -1,21 +1,22 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { filterAnecdotes } from '../reducers/anecdoteReducer'
+import { filterAnecdotes } from '../reducers/filterAnecdoteReducer'
 
 const AnecdoteFilter = () => {
   const dispatch = useDispatch()
-  const [filter, setFilter] = useState('')
   const handleTyping = (e) => {
-    setFilter(e.target.value)
-    dispatch(filterAnecdotes(filter))
+    dispatch(filterAnecdotes(e.target.value))
+  }
+
+  const style = {
+    marginBottom: 10,
   }
   return (
-    <>
+    <div style={style}>
       <span>
         filter
-        <input value={filter} onChange={(e) => handleTyping(e)} />
+        <input onChange={(e) => handleTyping(e)} />
       </span>
-    </>
+    </div>
   )
 }
 export default AnecdoteFilter
