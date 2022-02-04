@@ -12,9 +12,9 @@ export const getAnecdotes = async () => {
   }
 }
 
-export const postAnecdote = async (str) => {
+export const postAnecdote = async (content) => {
   try {
-    const anecdote = { str }
+    const anecdote = { content, votes: 0 }
     const res = await axios.post(baseURL, anecdote)
     return res.data
   } catch (err) {

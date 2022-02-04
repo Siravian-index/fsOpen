@@ -18,6 +18,7 @@ const App = () => {
     }
     init()
   }, [dispatch])
+
   return (
     <div>
       <h2>Anecdotes</h2>
