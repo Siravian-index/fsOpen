@@ -13,7 +13,6 @@ const App = () => {
   useEffect(() => {
     const init = async () => {
       const anecdotes = await anecdoteService.getAnecdotes()
-      console.log(anecdotes)
       dispatch(initAnecdotes(anecdotes))
     }
     init()
