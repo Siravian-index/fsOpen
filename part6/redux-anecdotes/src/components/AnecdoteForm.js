@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import { addedMessage } from '../reducers/messageReducer'
-import * as anecdoteService from '../services/anecdotes'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -10,9 +9,8 @@ const AnecdoteForm = () => {
     e.preventDefault()
     const anecdote = e.target.anecdote.value
     e.target.anecdote.value = ''
-    const newAnecdote = await anecdoteService.postAnecdote(anecdote)
-    dispatch(addAnecdote(newAnecdote))
-    dispatch(addedMessage(newAnecdote.content))
+    dispatch(addAnecdote(anecdote))
+    dispatch(addedMessage(anecdote))
   }
   return (
     <>

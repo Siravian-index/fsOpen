@@ -9,9 +9,12 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   // copies the array so we can sort it later.
   const mutableAnecdotes = anecdotes.slice()
-  const handleVote = (id) => {
-    dispatch(vote(id))
-    const anecdote = mutableAnecdotes.find((a) => a.id === id)
+
+  const handleVote = (anecdote) => {
+    // send the whole obj and in the thunk update the votes++
+    // then send a put request
+    // then in the reducer update the UI
+    dispatch(vote(anecdote))
     dispatch(votedMessage(anecdote.content))
   }
   // sort, filter, map
@@ -25,7 +28,7 @@ const AnecdoteList = () => {
             <div>{anecdote.content}</div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => handleVote(anecdote.id)}>vote</button>
+              <button onClick={() => handleVote(anecdote)}>vote</button>
             </div>
           </div>
         ))}

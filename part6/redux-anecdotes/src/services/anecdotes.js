@@ -21,3 +21,22 @@ export const postAnecdote = async (content) => {
     console.log(err)
   }
 }
+
+export const getAnecdote = async (id) => {
+  try {
+    const res = await axios.get(`${baseURL}/${id}`)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const putAnecdote = async (obj) => {
+  try {
+    const res = await axios.put(`${baseURL}/${obj.id}`, obj)
+    // should return updated obj, right?
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
