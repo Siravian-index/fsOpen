@@ -10,7 +10,7 @@ const AnecdoteForm = () => {
     const anecdote = e.target.anecdote.value
     e.target.anecdote.value = ''
     dispatch(addAnecdote(anecdote))
-    dispatch(addedMessage(anecdote))
+    dispatch(addedMessage(anecdote, 10))
   }
   return (
     <>

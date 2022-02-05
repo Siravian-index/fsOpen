@@ -11,11 +11,8 @@ const AnecdoteList = () => {
   const mutableAnecdotes = anecdotes.slice()
 
   const handleVote = (anecdote) => {
-    // send the whole obj and in the thunk update the votes++
-    // then send a put request
-    // then in the reducer update the UI
     dispatch(vote(anecdote))
-    dispatch(votedMessage(anecdote.content))
+    dispatch(votedMessage(anecdote.content, 10))
   }
   // sort, filter, map
   return (

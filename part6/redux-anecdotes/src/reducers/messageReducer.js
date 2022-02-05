@@ -17,11 +17,17 @@ const messageReducer = (state = initialState, action) => {
 
 // -----------------------
 // actions creators
+const MILLISECONDS = 1000
 
-export const addedMessage = (msg) => {
-  return {
-    type: 'ADDED_MESSAGE',
-    data: { msg },
+export const addedMessage = (msg, delay) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'ADDED_MESSAGE',
+      data: { msg },
+    })
+    setTimeout(() => {
+      dispatch(hideMessage())
+    }, delay * MILLISECONDS)
   }
 }
 
@@ -32,10 +38,15 @@ export const hideMessage = () => {
   }
 }
 
-export const votedMessage = (msg) => {
-  return {
-    type: 'VOTED_MESSAGE',
-    data: { msg },
+export const votedMessage = (msg, delay) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'VOTED_MESSAGE',
+      data: { msg },
+    })
+    setTimeout(() => {
+      dispatch(hideMessage())
+    }, delay * MILLISECONDS)
   }
 }
 // -----------------------
