@@ -1,15 +1,21 @@
-const initialState = ''
+const initialState = {
+  text: null,
+  timeoutId: null,
+}
 
 const messageReducer = (state = initialState, action) => {
   // console.log('state now: ', state)
   // console.log('action', action)
   switch (action.type) {
-    case 'ADDED_MESSAGE':
-      return `you added '${action.data.msg}'`
-    case 'VOTED_MESSAGE':
-      return `you voted '${action.data.msg}'`
-    case 'HIDE_MESSAGE':
-      return action.data.msg
+    case 'SET_TIMEOUT_ID':
+      return { text: state.text, timeoutId: action.data }
+    case 'SHOW_NOTIFICATION':
+      if (state.timeoutId) {
+        clearTimeout(state.timeoutId)
+      }
+      return { text: action.data, timeoutId: null }
+    case 'HIDE_NOTIFICATION':
+      return { text: null, timeoutId: null }
     default:
       return state
   }
@@ -19,35 +25,29 @@ const messageReducer = (state = initialState, action) => {
 // actions creators
 const MILLISECONDS = 1000
 
-export const addedMessage = (msg, delay) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'ADDED_MESSAGE',
-      data: { msg },
-    })
-    setTimeout(() => {
-      dispatch(hideMessage())
+export const createNotification = (message, delay = 5) => {
+  return async (dispatch) => {
+    dispatch(showNotification(message))
+    const timeoutId = setTimeout(() => {
+      dispatch(hideNotification())
     }, delay * MILLISECONDS)
+    dispatch(setTimeoutId(timeoutId))
   }
 }
 
-export const hideMessage = () => {
-  return {
-    type: 'HIDE_MESSAGE',
-    data: { msg: '' },
-  }
-}
+const showNotification = (message) => ({
+  type: 'SHOW_NOTIFICATION',
+  data: message,
+})
 
-export const votedMessage = (msg, delay) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'VOTED_MESSAGE',
-      data: { msg },
-    })
-    setTimeout(() => {
-      dispatch(hideMessage())
-    }, delay * MILLISECONDS)
-  }
-}
+const hideNotification = () => ({
+  type: 'HIDE_NOTIFICATION',
+})
+
+const setTimeoutId = (timeoutID) => ({
+  type: 'SET_TIMEOUT_ID',
+  data: timeoutID,
+})
+
 // -----------------------
 export default messageReducer

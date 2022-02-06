@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 // NOTE
 // went back in time to use connect instead of the modern way just to learn it.
-const Notification = (props) => {
+const Notification = ({ message: { text } }) => {
   // refactored
   // const message = useSelector(({ message }) => message)
   const style = {
@@ -14,7 +14,7 @@ const Notification = (props) => {
     padding: 10,
     borderWidth: 1,
   }
-  return props.message && <div style={style}>{props.message}</div>
+  return text && <div style={style}>{text}</div>
 }
 
 const mapStateToProps = (state) => {

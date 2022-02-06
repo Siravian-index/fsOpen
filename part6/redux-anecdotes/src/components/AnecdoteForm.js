@@ -3,7 +3,7 @@
 import { connect } from 'react-redux'
 
 import { addAnecdote } from '../reducers/anecdoteReducer'
-import { addedMessage } from '../reducers/messageReducer'
+import { createNotification } from '../reducers/messageReducer'
 
 // NOTE
 // went back in time to use connect instead of the modern way just to learn it.
@@ -20,7 +20,7 @@ const AnecdoteForm = (props) => {
     // dispatch(addedMessage(anecdote, 10))
     //-----
     props.addAnecdote(anecdote)
-    props.addedMessage(anecdote, 10)
+    // props.addedMessage(anecdote, 10)
   }
   return (
     <>
@@ -39,7 +39,7 @@ const AnecdoteForm = (props) => {
 // const mapStateToProps = {}
 const mapDispatchToPros = {
   addAnecdote,
-  addedMessage,
+  createNotification,
 }
 
 const ConnectedAnecdoteForm = connect(null, mapDispatchToPros)(AnecdoteForm)
