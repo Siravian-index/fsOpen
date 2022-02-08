@@ -9,6 +9,10 @@ import AnecdoteList from './components/AnecdoteList'
 import About from './components/About'
 import Footer from './components/Footer'
 import AnecdoteItem from './components/AnecdoteItem'
+import Notification from './components/Notification'
+
+// constants
+const NOTIFICATION_DELAY = 10
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -48,9 +52,14 @@ const App = () => {
     <>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification
+        notification={notification}
+        setNotification={setNotification}
+        notificationDelay={NOTIFICATION_DELAY}
+      />
       <Switch>
         <Route path='/create'>
-          <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} setNotification={setNotification} />
         </Route>
         <Route path='/about' component={About} />
         <Route path='/:id'>

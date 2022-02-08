@@ -1,9 +1,13 @@
+//imports
 import { useState } from 'react'
+import { useHistory } from 'react-router'
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,6 +17,8 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     })
+    props.setNotification(content)
+    history.push('/')
   }
 
   return (
