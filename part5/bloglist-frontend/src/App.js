@@ -10,6 +10,7 @@ import * as localStorageUtility from './utils/localStorageUtility'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  // move this to redux store and instead of props use useSelector
   useEffect(() => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
     populateBlogs()
