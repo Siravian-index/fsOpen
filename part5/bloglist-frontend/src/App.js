@@ -14,7 +14,6 @@ const App = () => {
   // const [user, setUser] = useState(null)
   // move this to redux store and instead of props use useSelector
   const user = useSelector(selectUserObj)
-  console.log(user)
   // useEffect(() => {
   //   let mounted = true
   //   const userFound = localStorageUtility.parseFromLocalStorage('currentUser')

@@ -13,7 +13,6 @@ const Login = () => {
     e.preventDefault()
     try {
       dispatch(logUser(credentials))
-      // localStorageUtility.saveToLocalStorage('currentUser', userData)
     } catch (err) {
       dispatch(showNotification({ message: 'wrong username or password', error: true }))
       console.log('user not found')
