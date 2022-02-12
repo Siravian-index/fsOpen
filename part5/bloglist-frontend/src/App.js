@@ -10,7 +10,6 @@ import * as localStorageUtility from './utils/localStorageUtility'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notificationConfig, setNotificationConfig] = useState({ type: '' })
   useEffect(() => {
     const populateBlogs = async () => setBlogs(await blogService.getAll())
     populateBlogs()
@@ -24,33 +23,23 @@ const App = () => {
     return () => (mounted = false)
   }, [])
 
-  useEffect(() => {
-    let mounted = true
-    let id = setTimeout(() => {
-      if (mounted) {
-        setNotificationConfig({ type: '' })
-      }
-    }, 5000)
-    return () => {
-      mounted = false
-      clearTimeout(id)
-    }
-  }, [notificationConfig.type])
-
   return (
     <>
       {!user && (
         <div>
-          <Login notification={notificationConfig} setUser={setUser} setNotificationConfig={setNotificationConfig} />
+          {/* missing notification */}
+          <Login setUser={setUser} />
         </div>
       )}
 
       {user && (
         <div>
           <h2>blogs</h2>
-          <Notification config={notificationConfig} />
+          {/* missing notification */}
+          <Notification />
           <UserDetails user={user} setUser={setUser} />
-          <CreateBlog user={user} setBlogs={setBlogs} setNotificationConfig={setNotificationConfig} />
+          {/* missing notification */}
+          <CreateBlog user={user} setBlogs={setBlogs} />
           <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
         </div>
       )}

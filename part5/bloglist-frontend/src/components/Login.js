@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import * as loginService from '../services/login'
 import * as localStorageUtility from '../utils/localStorageUtility'
 
-const Login = ({ notification, setUser, setNotificationConfig }) => {
+const Login = ({ notification, setUser }) => {
   const [credentials, setCredentials] = useState({ username: '', password: '' })
 
   const handleLogin = async (e, credentials) => {
@@ -14,7 +14,6 @@ const Login = ({ notification, setUser, setNotificationConfig }) => {
       localStorageUtility.saveToLocalStorage('currentUser', userData)
       // setCredentials({ username: '', password: '' })
     } else {
-      setNotificationConfig({ type: 'loginError' })
       console.log('user not found')
     }
   }

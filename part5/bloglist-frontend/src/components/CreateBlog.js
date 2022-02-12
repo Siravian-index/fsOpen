@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as blogService from '../services/blogs'
 
-const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
+const CreateBlog = ({ user, setBlogs }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [showBlogForm, setShowBlogForm] = useState(false)
 
@@ -11,11 +11,9 @@ const CreateBlog = ({ user, setBlogs, setNotificationConfig }) => {
     if (blog) {
       setBlogs((prev) => [...prev, blog])
       setNewBlog({ title: '', author: '', url: '' })
-      setNotificationConfig({ type: 'blogSuccess', blog })
       // hide form
       setShowBlogForm(!showBlogForm)
     } else {
-      setNotificationConfig({ type: 'blogError' })
       console.log('bad request')
     }
   }
