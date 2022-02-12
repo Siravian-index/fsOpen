@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { showNotification } from '../reducers/notificationSlice'
 import * as blogService from '../services/blogs'
 
 const CreateBlog = ({ user, setBlogs }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [showBlogForm, setShowBlogForm] = useState(false)
-
+  const dispatch = useDispatch()
   const handleNewBlog = async (e, newBlog) => {
     e.preventDefault()
     const blog = await blogService.createOne(newBlog, user.token)
     if (blog) {
       setBlogs((prev) => [...prev, blog])
+      dispatch(showNotification({ message: `a new blog ${blog.title} by ${blog.author} added` }))
       setNewBlog({ title: '', author: '', url: '' })
-      // hide form
       setShowBlogForm(!showBlogForm)
     } else {
+      dispatch(showNotification({ message: 'something went wrong', error: true }))
       console.log('bad request')
     }
   }

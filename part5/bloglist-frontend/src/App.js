@@ -27,7 +27,6 @@ const App = () => {
     <>
       {!user && (
         <div>
-          {/* missing notification */}
           <Login setUser={setUser} />
         </div>
       )}
@@ -35,10 +34,8 @@ const App = () => {
       {user && (
         <div>
           <h2>blogs</h2>
-          {/* missing notification */}
           <Notification />
           <UserDetails user={user} setUser={setUser} />
-          {/* missing notification */}
           <CreateBlog user={user} setBlogs={setBlogs} />
           <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
         </div>
