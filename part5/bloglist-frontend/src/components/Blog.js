@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // local imports
 import { deleteBlog, likeBlog } from '../reducers/blogsSlice'
+import { selectUserObj } from '../reducers/userSlice'
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
+  const user = useSelector(selectUserObj)
   const dispatch = useDispatch()
   const [showExtraInfo, setShowExtraInfo] = useState(false)
-  const [postedBy, setPostedBy] = useState('')
-  const [username, setUsername] = useState('')
+  const [postedBy, setPostedBy] = useState(user.name)
+  const [username, setUsername] = useState(user.username)
 
   const handleShow = () => {
     setShowExtraInfo(!showExtraInfo)

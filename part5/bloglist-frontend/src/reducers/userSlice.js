@@ -16,7 +16,7 @@ export const usersSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserFromLocalStorage: () => {
+    readUserFromLocalStorage: () => {
       const userFound = localStorageUtility.parseFromLocalStorage(LOCAL_STORAGE_USER_KEY)
       if (userFound) {
         return userFound
@@ -36,9 +36,10 @@ export const usersSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { clearUserFromStateAndStorage, setUserFromLocalStorage } = usersSlice.actions
+export const { clearUserFromStateAndStorage, readUserFromLocalStorage } = usersSlice.actions
 
 export default usersSlice.reducer
 
 // selector helpers
 export const selectUserObj = (state) => state.user
+export const selectUserToken = (state) => state.user.token

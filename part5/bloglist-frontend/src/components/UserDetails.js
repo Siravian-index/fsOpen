@@ -1,14 +1,20 @@
-import * as loginService from '../services/login'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+// local imports
+import { clearUserFromStateAndStorage, selectUserObj } from '../reducers/userSlice'
 
-// dispatch an action to log the user out
-const UserDetails = ({ user, setUser }) => {
+const UserDetails = () => {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserObj)
+  const handleClick = () => {
+    dispatch(clearUserFromStateAndStorage())
+  }
   return (
     <>
       <div>
         <p>
           {user.username} logged in{' '}
-          <button id='logout-button' onClick={() => loginService.logout(setUser)}>
+          <button id='logout-button' onClick={() => handleClick()}>
             logout
           </button>
         </p>

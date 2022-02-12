@@ -1,30 +1,26 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 // local imports
 import CreateBlog from './components/CreateBlog'
 import BlogList from './components/BlogList'
 import Login from './components/Login'
 import Notification from './components/Notification'
 import UserDetails from './components/UserDetails'
-import { selectUserObj } from './reducers/userSlice'
+import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
 
-// add user to localStorage
-// clear user from localStorage
 const App = () => {
-  // const [user, setUser] = useState(null)
-  // move this to redux store and instead of props use useSelector
+  const dispatch = useDispatch()
   const user = useSelector(selectUserObj)
-  // useEffect(() => {
-  //   let mounted = true
-  //   const userFound = localStorageUtility.parseFromLocalStorage('currentUser')
-  //   if (userFound && mounted) {
-  //     // setUser(userFound)
-  //   }
-  //   return () => (mounted = false)
-  // }, [])
+  useEffect(() => {
+    let mounted = true
+    if (!user.token && mounted) {
+      dispatch(readUserFromLocalStorage())
+    }
+    return () => (mounted = false)
+  }, [])
   return (
     <>
-      {user && (
+      {!user.token && (
         <div>
           <Login />
         </div>
@@ -34,10 +30,9 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <Notification />
-          {/* setUser not defined */}
-          <UserDetails user={user} />
-          <CreateBlog user={user} />
-          <BlogList user={user} />
+          <UserDetails />
+          <CreateBlog />
+          <BlogList />
         </div>
       )}
     </>

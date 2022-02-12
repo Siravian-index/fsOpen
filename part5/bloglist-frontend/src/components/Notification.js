@@ -11,7 +11,6 @@ const Notification = () => {
     let mounted = true
     let id
     if (message && mounted) {
-      // dispatch hideAction after 5 sec
       setTimeout(() => {
         dispatch(hideNotification())
       }, 5000)

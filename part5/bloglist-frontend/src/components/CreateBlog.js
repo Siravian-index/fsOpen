@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // local imports
 import { addNewBlog } from '../reducers/blogsSlice'
 import { showNotification } from '../reducers/notificationSlice'
+import { selectUserToken } from '../reducers/userSlice'
 
-const CreateBlog = ({ user }) => {
+const CreateBlog = () => {
   const dispatch = useDispatch()
+  const token = useSelector(selectUserToken)
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [showBlogForm, setShowBlogForm] = useState(false)
   const [addRequestStatus, setAddRequestStatus] = useState('idle')
@@ -15,7 +17,7 @@ const CreateBlog = ({ user }) => {
     e.preventDefault()
     try {
       setAddRequestStatus('pending')
-      const payload = { newBlog, token: user.token }
+      const payload = { newBlog, token }
       const blog = await dispatch(addNewBlog(payload)).unwrap()
       dispatch(showNotification({ message: `a new blog ${blog.title} by ${blog.author} added` }))
       setNewBlog({ title: '', author: '', url: '' })
