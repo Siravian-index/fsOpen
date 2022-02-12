@@ -40,7 +40,7 @@ export const deleteBlog = async (id, token) => {
   try {
     const res = await axios.delete(`${baseUrl}/${id}`, config)
     if (res.status === 204) {
-      return 'blog deleted'
+      return id
     }
   } catch (err) {
     console.log(err)

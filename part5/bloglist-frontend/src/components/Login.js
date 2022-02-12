@@ -3,20 +3,18 @@ import Notification from './Notification'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 // local imports
-import * as loginService from '../services/login'
-import * as localStorageUtility from '../utils/localStorageUtility'
 import { showNotification } from '../reducers/notificationSlice'
+import { logUser } from '../reducers/userSlice'
 
-const Login = ({ notification, setUser }) => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' })
+const Login = () => {
+  const [credentials, setCredentials] = useState({ username: 'davinchi', password: 'testing123' })
   const dispatch = useDispatch()
   const handleLogin = async (e, credentials) => {
     e.preventDefault()
-    const userData = await loginService.login(credentials)
-    if (userData) {
-      setUser(userData)
-      localStorageUtility.saveToLocalStorage('currentUser', userData)
-    } else {
+    try {
+      dispatch(logUser(credentials))
+      // localStorageUtility.saveToLocalStorage('currentUser', userData)
+    } catch (err) {
       dispatch(showNotification({ message: 'wrong username or password', error: true }))
       console.log('user not found')
     }
@@ -24,7 +22,7 @@ const Login = ({ notification, setUser }) => {
   return (
     <div>
       <h2>log in to application</h2>
-      <Notification config={notification} />
+      <Notification />
       <form onSubmit={(e) => handleLogin(e, credentials)}>
         <div>
           <label>

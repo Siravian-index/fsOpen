@@ -28,15 +28,16 @@ export const likeBlog = createAsyncThunk('blogs/likeBlog', async (blog) => {
   return res
 })
 
+export const deleteBlog = createAsyncThunk('blog/deleteBlog', async (payload) => {
+  const { blog, token } = payload
+  const res = await blogService.deleteBlog(blog.id, token)
+  return res
+})
+
 export const blogsSlice = createSlice({
   name: 'blogs',
   initialState,
-  reducers: {
-    // add like
-    test: (state) => {
-      state.blogs = state.blogs.length
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       // fetchBlogs case
@@ -60,11 +61,16 @@ export const blogsSlice = createSlice({
         const updatedBlog = action.payload
         state.blogs = state.blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
       })
+      // deleteBlog case
+      .addCase(deleteBlog.fulfilled, (state, action) => {
+        const deletedId = action.payload
+        state.blogs = state.blogs.filter((blog) => blog.id !== deletedId)
+      })
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { test } = blogsSlice.actions
+// export const {  } = blogsSlice.actions
 
 export default blogsSlice.reducer
 

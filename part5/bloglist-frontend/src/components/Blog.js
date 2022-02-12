@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { likeBlog } from '../reducers/blogsSlice'
-
 // local imports
-import * as blogService from '../services/blogs'
+import { deleteBlog, likeBlog } from '../reducers/blogsSlice'
 
 const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
@@ -23,13 +21,8 @@ const Blog = ({ blog, user }) => {
   const handleDelete = async (blog) => {
     const c = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
     if (c) {
-      const res = await blogService.deleteBlog(blog.id, user.token)
-      console.log(res)
-      if (res) {
-        // set success banner
-        // setBlogs((prev) => prev.filter((b) => b.id !== blog.id))
-      }
-      // set error banner
+      const payload = { blog, token: user.token }
+      dispatch(deleteBlog(payload))
     }
   }
 
