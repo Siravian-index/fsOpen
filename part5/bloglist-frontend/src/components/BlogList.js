@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchBlogs, selectBlogsState } from '../reducers/blogsSlice'
 
 // we still need to refactor setBlogs and user props since we don't have to pass them as props
-const BlogList = ({ setBlogs, user }) => {
+const BlogList = ({ user }) => {
   const dispatch = useDispatch()
   const { blogs, status: blogStatus, error } = useSelector(selectBlogsState)
   useEffect(() => {
@@ -19,7 +19,7 @@ const BlogList = ({ setBlogs, user }) => {
     content = <div>loading...</div>
   } else if (blogStatus === 'succeeded') {
     const orderedBlogs = blogs.slice().sort((a, b) => b.likes - a.likes)
-    content = orderedBlogs.map((blog) => <Blog key={blog.id} blog={blog} user={user} setBlogs={setBlogs} />)
+    content = orderedBlogs.map((blog) => <Blog key={blog.id} blog={blog} user={user} />)
   } else if (blogStatus === 'failed') {
     content = <div>{error}</div>
   }

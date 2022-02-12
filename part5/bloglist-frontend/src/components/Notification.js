@@ -6,7 +6,6 @@ import { hideNotification, selectNotificationObj } from '../reducers/notificatio
 
 const Notification = () => {
   const { message, error } = useSelector(selectNotificationObj)
-  console.log(message, error)
   const dispatch = useDispatch()
   useEffect(() => {
     let mounted = true
@@ -22,7 +21,6 @@ const Notification = () => {
       clearTimeout(id)
     }
   }, [message])
-  console.log(message)
 
   // error prop is just to add the style
   return <> {message && <div className={error ? 'error' : 'success'}>{message}</div>}</>

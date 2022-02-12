@@ -4,17 +4,11 @@ import BlogList from './components/BlogList'
 import Login from './components/Login'
 import Notification from './components/Notification'
 import UserDetails from './components/UserDetails'
-import * as blogService from './services/blogs'
 import * as localStorageUtility from './utils/localStorageUtility'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   // move this to redux store and instead of props use useSelector
-  useEffect(() => {
-    const populateBlogs = async () => setBlogs(await blogService.getAll())
-    populateBlogs()
-  }, [])
   useEffect(() => {
     let mounted = true
     const userFound = localStorageUtility.parseFromLocalStorage('currentUser')
@@ -23,7 +17,6 @@ const App = () => {
     }
     return () => (mounted = false)
   }, [])
-
   return (
     <>
       {!user && (
@@ -37,8 +30,8 @@ const App = () => {
           <h2>blogs</h2>
           <Notification />
           <UserDetails user={user} setUser={setUser} />
-          <CreateBlog user={user} setBlogs={setBlogs} />
-          <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
+          <CreateBlog user={user} />
+          <BlogList user={user} />
         </div>
       )}
     </>

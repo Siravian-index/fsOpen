@@ -8,8 +8,9 @@ export const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
   return res
 })
 
-export const addNewBlog = createAsyncThunk('blogs/addNewBlog', async (blog, token) => {
-  const res = await blogService.createOne(blog, token)
+export const addNewBlog = createAsyncThunk('blogs/addNewBlog', async (payload) => {
+  const { newBlog, token } = payload
+  const res = await blogService.createOne(newBlog, token)
   return res
 })
 
@@ -36,6 +37,9 @@ export const blogsSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addNewBlog.fulfilled, (state, action) => {
+        console.log(state)
+        console.log(action)
+
         state.blogs.push(action.payload)
       })
   },
