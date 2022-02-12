@@ -5,10 +5,9 @@ import * as localStorageUtility from '../utils/localStorageUtility'
 
 const initialState = { name: null, token: null, username: null }
 
-const LOCAL_STORAGE_USER_KEY = 'currentUser'
 export const logUser = createAsyncThunk('user/logUser', async (payload) => {
   const res = await loginService.login(payload)
-  localStorageUtility.saveToLocalStorage(LOCAL_STORAGE_USER_KEY, res)
+  localStorageUtility.saveToLocalStorage(localStorageUtility.LOCAL_STORAGE_USER_KEY, res)
   return res
 })
 
@@ -17,14 +16,14 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     readUserFromLocalStorage: () => {
-      const userFound = localStorageUtility.parseFromLocalStorage(LOCAL_STORAGE_USER_KEY)
+      const userFound = localStorageUtility.parseFromLocalStorage(localStorageUtility.LOCAL_STORAGE_USER_KEY)
       if (userFound) {
         return userFound
       }
       console.log('not user found')
     },
     clearUserFromStateAndStorage: () => {
-      localStorageUtility.deleteFromLocalStorage(LOCAL_STORAGE_USER_KEY)
+      localStorageUtility.deleteFromLocalStorage(localStorageUtility.LOCAL_STORAGE_USER_KEY)
       return { name: null, token: null, username: null }
     },
   },

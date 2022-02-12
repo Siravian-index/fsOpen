@@ -1,3 +1,5 @@
+export const LOCAL_STORAGE_USER_KEY = 'currentUser'
+
 export const saveToLocalStorage = (key, value) => {
   const valueString = JSON.stringify(value)
   localStorage.setItem(key, valueString)
