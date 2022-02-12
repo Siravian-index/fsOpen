@@ -11,6 +11,20 @@ export const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
 export const addNewBlog = createAsyncThunk('blogs/addNewBlog', async (payload) => {
   const { newBlog, token } = payload
   const res = await blogService.createOne(newBlog, token)
+  // the return from this asyncThunk are place in the action.payload at the extraReducers
+  return res
+})
+
+export const likeBlog = createAsyncThunk('blogs/likeBlog', async (blog) => {
+  const { id, author, url, title } = blog
+  const baseUpdate = {
+    user: blog.user?.id || blog.user,
+    likes: blog.likes + 1,
+    author,
+    title,
+    url,
+  }
+  const res = await blogService.editBlog(baseUpdate, id)
   return res
 })
 
@@ -25,6 +39,7 @@ export const blogsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      // fetchBlogs case
       .addCase(fetchBlogs.pending, (state) => {
         state.status = 'loading'
       })
@@ -36,11 +51,14 @@ export const blogsSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      // addNewBlog case
       .addCase(addNewBlog.fulfilled, (state, action) => {
-        console.log(state)
-        console.log(action)
-
         state.blogs.push(action.payload)
+      })
+      // likeBlog case
+      .addCase(likeBlog.fulfilled, (state, action) => {
+        const updatedBlog = action.payload
+        state.blogs = state.blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
       })
   },
 })

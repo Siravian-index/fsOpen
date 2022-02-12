@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog } from '../reducers/blogsSlice'
+
+// local imports
 import * as blogService from '../services/blogs'
 
 const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
   const [showExtraInfo, setShowExtraInfo] = useState(false)
   const [postedBy, setPostedBy] = useState('')
   const [username, setUsername] = useState('')
@@ -10,19 +15,9 @@ const Blog = ({ blog, user }) => {
     setShowExtraInfo(!showExtraInfo)
   }
   const handleLike = async (blog) => {
-    const { id, author, url, title } = blog
-    const baseUpdate = {
-      user: blog.user?.id || blog.user,
-      likes: blog.likes + 1,
-      author,
-      title,
-      url,
-    }
     setPostedBy(postedBy || blog.user?.name)
     setUsername(username || blog.user?.username)
-    const updatedBlog = await blogService.editBlog(baseUpdate, id)
-    console.log('replace this line', updatedBlog)
-    // await setBlogs((prev) => prev.map((b) => (b.id !== blog.id ? b : updatedBlog)))
+    dispatch(likeBlog(blog))
   }
 
   const handleDelete = async (blog) => {
