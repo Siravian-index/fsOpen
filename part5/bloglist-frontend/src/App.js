@@ -8,13 +8,9 @@ import BlogList from './components/BlogList'
 import Dashboard from './components/Dashboard'
 import UsersList from './components/UsersList'
 import Login from './components/Login'
+import User from './components/User'
 import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
 
-// implement router (index and routes)
-// create users services
-// create usersSlice.js
-// create usersBasicInfo component
-// render accordingly
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectUserObj)
@@ -32,7 +28,9 @@ const App = () => {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Dashboard />}>
-          <Route path='users' element={<UsersList />} />
+          <Route path='users' element={<UsersList />}>
+            <Route path=':id' element={<User />} />
+          </Route>
           <Route path='create' element={<CreateBlog />} />
           <Route path='blogs' element={<BlogList />} />
         </Route>

@@ -39,3 +39,4 @@ export default usersSlice.reducer
 // selector helpers
 export const selectUsersState = (state) => state.users
 export const selectUsersArray = (state) => state.users.users
+export const selectUserFromArray = (state, id) => state.users.users.find((user) => user.id === id)
