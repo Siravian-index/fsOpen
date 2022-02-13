@@ -6,8 +6,8 @@ import { selectUserFromArray } from '../reducers/usersSlice'
 const User = () => {
   const navigate = useNavigate()
   const [userId, setShowOutlet] = useOutletContext()
-  const user = useSelector((state) => selectUserFromArray(state, Number(userId)))
-
+  const user = useSelector((state) => selectUserFromArray(state, userId))
+  console.log('user data', user)
   // returns the user to the /users page if no specific user was found
   useEffect(() => {
     if (!user) {
@@ -15,13 +15,18 @@ const User = () => {
       setShowOutlet(false)
     }
   }, [user])
+
   return (
     <>
       {user && (
         <div>
-          <h4>username</h4>
+          <h2>{user.username}</h2>
           <h3>added blogs</h3>
-          <div>list of blogs</div>
+          {user.blogs.map((blog) => (
+            <ul key={blog.id}>
+              <li>{blog.title}</li>
+            </ul>
+          ))}
         </div>
       )}
     </>

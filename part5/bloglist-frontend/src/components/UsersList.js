@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useParams, Link } from 'react-router-dom'
 // local
 import { selectUsersState } from '../reducers/usersSlice'
 import { fetchUsers } from '../reducers/usersSlice'
@@ -11,16 +11,19 @@ const UsersInformation = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const { users, status: usersStatus, error } = useSelector(selectUsersState)
+  // loads users from backend
   useEffect(() => {
     if (usersStatus === 'idle') {
       dispatch(fetchUsers())
     }
   }, [users, dispatch])
-
+  // shows outlet if the url has an id
   useEffect(() => {
     if (id) {
       setShowOutlet(true)
       setUserId(id)
+    } else {
+      setShowOutlet(false)
     }
   }, [id])
 
@@ -31,7 +34,7 @@ const UsersInformation = () => {
   const usersList = users.map((user) => (
     <div key={user.id}>
       <p>
-        {user.username} - {user.blogs.length}
+        <Link to={`/users/${user.id}`}>{user.username}</Link>- {user.blogs.length}
       </p>
     </div>
   ))
