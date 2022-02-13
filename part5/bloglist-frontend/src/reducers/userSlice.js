@@ -11,7 +11,7 @@ export const logUser = createAsyncThunk('user/logUser', async (payload) => {
   return res
 })
 
-export const usersSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -35,9 +35,9 @@ export const usersSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { clearUserFromStateAndStorage, readUserFromLocalStorage } = usersSlice.actions
+export const { clearUserFromStateAndStorage, readUserFromLocalStorage } = userSlice.actions
 
-export default usersSlice.reducer
+export default userSlice.reducer
 
 // selector helpers
 export const selectUserObj = (state) => state.user
