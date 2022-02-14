@@ -8,6 +8,7 @@ blogRouter.use(blogMiddleware.parseTokenFromHeader)
 blogRouter.get('/', blogController.allBlogs)
 blogRouter.get('/:id', blogController.oneBlog)
 blogRouter.post('/', blogMiddleware.userExtractor, blogController.newBlog)
+blogRouter.post('/:id/comments', blogMiddleware.userExtractor, blogController.newComment)
 blogRouter.delete('/:id', blogMiddleware.userExtractor, blogController.deleteBlog)
 blogRouter.put('/:id', blogController.updateBlog)
 

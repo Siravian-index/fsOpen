@@ -76,3 +76,21 @@ module.exports.updateBlog = async (req, res) => {
     return res.status(404).end()
   }
 }
+
+module.exports.newComment = async (req, res) => {
+  const { comment } = req.body
+  const { id } = req.params
+  if (!comment || !id) {
+    return res.status(400).end()
+  }
+  try {
+    const user = req.user
+    console.log(user)
+    const blog = await Blog.findById(id)
+    blog.comments.push(comment)
+    await blog.save()
+    return res.status(201).json(blog)
+  } catch (err) {
+    next(err)
+  }
+}
