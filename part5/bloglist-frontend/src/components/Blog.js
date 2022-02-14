@@ -54,7 +54,9 @@ const Blog = () => {
             <h3 className='title-author'>
               {blog.title} {blog.author}
             </h3>
-            <div>{blog.url}</div>
+            <a href={blog.url} target='_blank' rel='noreferrer'>
+              {blog.url}
+            </a>
             <div>
               likes {blog.likes}{' '}
               <button id='like-button' onClick={() => handleLike(blog)}>

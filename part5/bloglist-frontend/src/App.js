@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
 // local imports
-import CreateBlog from './components/CreateBlog'
-import BlogList from './components/BlogList'
 import Dashboard from './components/Dashboard'
 import UsersList from './components/UsersList'
 import Login from './components/Login'
 import User from './components/User'
 import Blog from './components/Blog'
 import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
+import Blogs from './components/Blogs'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -36,9 +35,7 @@ const App = () => {
           <Route path='users' element={<UsersList />}>
             <Route path=':id' element={<User />} />
           </Route>
-          <Route path='create' element={<CreateBlog />} />
-          {/* this blogList could go in the default / */}
-          <Route path='blogs' element={<BlogList />}>
+          <Route path='blogs' element={<Blogs />}>
             <Route path=':id' element={<Blog />} />
           </Route>
         </Route>
@@ -48,20 +45,3 @@ const App = () => {
 }
 
 export default App
-// <>
-//   {!user.token && (
-//     <div>
-//       <Login />
-//     </div>
-//   )}
-
-//   {user.token && (
-// <div>
-// <h2>blogs</h2>
-// <Notification />
-// <UserDetails />
-//   <CreateBlog />
-//   <BlogList />
-// </div>
-//   )}
-// </>

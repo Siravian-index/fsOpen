@@ -11,9 +11,9 @@ const Dashboard = () => {
   // if user is log in render outlet else redirect to login ocmponent
   return (
     <>
-      <h2>blogs</h2>
-      <Notification />
       <UserDetails />
+      <h2>blog app</h2>
+      <Notification />
       <Outlet />
     </>
   )

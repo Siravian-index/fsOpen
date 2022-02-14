@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault()
     try {
       dispatch(logUser(credentials))
-      navigate('/')
+      navigate('/blogs')
     } catch (err) {
       dispatch(showNotification({ message: 'wrong username or password', error: true }))
       console.log('user not found')
