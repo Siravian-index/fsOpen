@@ -76,3 +76,4 @@ export default blogsSlice.reducer
 
 // selector helpers
 export const selectBlogsState = (state) => state.blogs
+export const selectBlogFromArray = (state, id) => state.blogs.blogs.find((blog) => blog.id === id)

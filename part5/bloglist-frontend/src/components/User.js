@@ -7,7 +7,6 @@ const User = () => {
   const navigate = useNavigate()
   const [userId, setShowOutlet] = useOutletContext()
   const user = useSelector((state) => selectUserFromArray(state, userId))
-  console.log('user data', user)
   // returns the user to the /users page if no specific user was found
   useEffect(() => {
     if (!user) {

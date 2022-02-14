@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard'
 import UsersList from './components/UsersList'
 import Login from './components/Login'
 import User from './components/User'
+import Blog from './components/Blog'
 import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
 
 const App = () => {
@@ -32,7 +33,10 @@ const App = () => {
             <Route path=':id' element={<User />} />
           </Route>
           <Route path='create' element={<CreateBlog />} />
-          <Route path='blogs' element={<BlogList />} />
+          {/* this blogList could go in the default / */}
+          <Route path='blogs' element={<BlogList />}>
+            <Route path=':id' element={<Blog />} />
+          </Route>
         </Route>
       </Routes>
     </div>

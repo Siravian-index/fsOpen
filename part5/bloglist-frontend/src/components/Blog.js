@@ -1,19 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 // local imports
-import { deleteBlog, likeBlog } from '../reducers/blogsSlice'
+import { deleteBlog, likeBlog, selectBlogFromArray } from '../reducers/blogsSlice'
 import { selectUserObj } from '../reducers/userSlice'
 
-const Blog = ({ blog }) => {
+const Blog = () => {
   const user = useSelector(selectUserObj)
   const dispatch = useDispatch()
-  const [showExtraInfo, setShowExtraInfo] = useState(false)
-  const [postedBy, setPostedBy] = useState(user.name)
-  const [username, setUsername] = useState(user.username)
+  // user.name / user.username << tests with own post
+  const [postedBy, setPostedBy] = useState('')
+  const [username, setUsername] = useState('')
 
-  const handleShow = () => {
-    setShowExtraInfo(!showExtraInfo)
-  }
+  // useEffect to identify the owner || select it from the store
+  const navigate = useNavigate()
+  const [blogId, setShowOutlet] = useOutletContext()
+  const blog = useSelector((state) => selectBlogFromArray(state, blogId))
+  // returns the user to the /users page if no specific user was found
+  useEffect(() => {
+    if (!blog) {
+      navigate('/blogs/')
+      setShowOutlet(false)
+    }
+  }, [blog])
+
   const handleLike = async (blog) => {
     setPostedBy(postedBy || blog.user?.name)
     setUsername(username || blog.user?.username)
@@ -35,17 +45,15 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
+
   return (
     <>
-      <div style={blogStyle} className='blog'>
-        <span className='title-author'>
-          {blog.title} {blog.author}{' '}
-          <button id='show-more' onClick={handleShow}>
-            {showExtraInfo ? 'hide' : 'view'}
-          </button>
-        </span>
-        {showExtraInfo && (
-          <div className='extra-content'>
+      {blog && (
+        <>
+          <div style={blogStyle} className='blog'>
+            <h3 className='title-author'>
+              {blog.title} {blog.author}
+            </h3>
             <div>{blog.url}</div>
             <div>
               likes {blog.likes}{' '}
@@ -53,7 +61,8 @@ const Blog = ({ blog }) => {
                 like
               </button>
             </div>
-            <div>{blog.user?.name || postedBy}</div>
+            {/* deletesd */}
+            <div>added by {blog.user?.name || postedBy}</div>
             <div>
               {(user.username === blog.user?.username || username === user.username) && (
                 <button id='delete-button' onClick={() => handleDelete(blog)}>
@@ -62,8 +71,8 @@ const Blog = ({ blog }) => {
               )}
             </div>
           </div>
-        )}
-      </div>
+        </>
+      )}
     </>
   )
 }
