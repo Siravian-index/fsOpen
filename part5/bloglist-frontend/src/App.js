@@ -19,6 +19,10 @@ const App = () => {
   useEffect(() => {
     let mounted = true
     if (!user.token && mounted) {
+      // create a hook to check if use is log in and handle it appropriately
+      // in the custom hook place this first so the logic can follow
+      // we check if no user is found then we redirect the user.
+      // else the data is loaded
       dispatch(readUserFromLocalStorage())
     }
     return () => (mounted = false)

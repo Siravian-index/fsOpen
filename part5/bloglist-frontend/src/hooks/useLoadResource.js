@@ -9,5 +9,4 @@ export const useLoadResource = (resource, status, fetchFn) => {
       dispatch(fetchFn())
     }
   }, [resource, dispatch])
-  console.log('resource fetch', resource)
 }

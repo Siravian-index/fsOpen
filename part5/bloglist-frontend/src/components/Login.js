@@ -5,14 +5,18 @@ import { useDispatch } from 'react-redux'
 // local imports
 import { showNotification } from '../reducers/notificationSlice'
 import { logUser } from '../reducers/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: 'davinchi', password: 'testing123' })
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const handleLogin = async (e, credentials) => {
     e.preventDefault()
     try {
       dispatch(logUser(credentials))
+      navigate('/')
     } catch (err) {
       dispatch(showNotification({ message: 'wrong username or password', error: true }))
       console.log('user not found')
