@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Outlet, useParams, Link } from 'react-router-dom'
 // local
 import { selectUsersState } from '../reducers/usersSlice'
 import { fetchUsers } from '../reducers/usersSlice'
+import { useShowOutlet } from '../hooks/useShowOutlet'
+import { useLoadResource } from '../hooks/useLoadResource'
 
 const UsersInformation = () => {
-  const [showOutlet, setShowOutlet] = useState(false)
-  const [userId, setUserId] = useState(null)
-  const dispatch = useDispatch()
   const { id } = useParams()
-  const { users, status: usersStatus, error } = useSelector(selectUsersState)
+  const { resourceId, setShowOutlet, showOutlet } = useShowOutlet(id)
+  const { users, status, error } = useSelector(selectUsersState)
   // loads users from backend
-  useEffect(() => {
-    if (usersStatus === 'idle') {
-      dispatch(fetchUsers())
-    }
-  }, [users, dispatch])
-  // shows outlet if the url has an id
-  useEffect(() => {
-    if (id) {
-      setShowOutlet(true)
-      setUserId(id)
-    } else {
-      setShowOutlet(false)
-    }
-  }, [id])
+  useLoadResource(users, status, fetchUsers)
 
   if (error) {
     return <p>{error}</p>
@@ -48,7 +35,7 @@ const UsersInformation = () => {
           {usersList}
         </>
       ) : (
-        <Outlet context={[userId, setShowOutlet]} />
+        <Outlet context={[resourceId, setShowOutlet]} />
       )}
     </>
   )

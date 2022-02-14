@@ -1,6 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 // local
+// import BlogList from './BlogList'
+// import CreateBlog from './CreateBlog'
 import Notification from './Notification'
 import UserDetails from './UserDetails'
 

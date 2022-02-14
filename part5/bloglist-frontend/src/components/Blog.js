@@ -8,20 +8,20 @@ import { selectUserObj } from '../reducers/userSlice'
 const Blog = () => {
   const user = useSelector(selectUserObj)
   const dispatch = useDispatch()
-  // user.name / user.username << tests with own post
-  const [postedBy, setPostedBy] = useState('')
-  const [username, setUsername] = useState('')
-
-  // useEffect to identify the owner || select it from the store
   const navigate = useNavigate()
   const [blogId, setShowOutlet] = useOutletContext()
   const blog = useSelector((state) => selectBlogFromArray(state, blogId))
-  // returns the user to the /users page if no specific user was found
+  const [postedBy, setPostedBy] = useState('')
+  const [username, setUsername] = useState('')
+
+  // can extract this to an hook
   useEffect(() => {
-    if (!blog) {
+    let m = true
+    if (!blog && m) {
       navigate('/blogs/')
       setShowOutlet(false)
     }
+    return () => (m = false)
   }, [blog])
 
   const handleLike = async (blog) => {
@@ -61,7 +61,6 @@ const Blog = () => {
                 like
               </button>
             </div>
-            {/* deletesd */}
             <div>added by {blog.user?.name || postedBy}</div>
             <div>
               {(user.username === blog.user?.username || username === user.username) && (
