@@ -78,9 +78,6 @@ export const blogsSlice = createSlice({
         const blog = action.payload
         state.blogs = state.blogs.map((b) => (b.id !== blog.id ? b : blog))
       })
-      .addCase(addNewComment.rejected, () => {
-        console.log('promised rejected, comment failed')
-      })
   },
 })
 
