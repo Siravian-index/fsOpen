@@ -4,6 +4,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 // local imports
 import { deleteBlog, likeBlog, selectBlogFromArray } from '../reducers/blogsSlice'
 import { selectUserObj } from '../reducers/userSlice'
+import BlogComments from './BlogComments'
 
 const Blog = () => {
   const user = useSelector(selectUserObj)
@@ -45,7 +46,6 @@ const Blog = () => {
     borderWidth: 1,
     marginBottom: 5,
   }
-
   return (
     <>
       {blog && (
@@ -71,6 +71,7 @@ const Blog = () => {
                 </button>
               )}
             </div>
+            <BlogComments blog={blog} />
           </div>
         </>
       )}

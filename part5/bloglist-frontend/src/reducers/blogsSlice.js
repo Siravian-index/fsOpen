@@ -15,6 +15,12 @@ export const addNewBlog = createAsyncThunk('blogs/addNewBlog', async (payload) =
   return res
 })
 
+export const addNewComment = createAsyncThunk('blogs/addNewComment', async (payload) => {
+  const { comment, id, token } = payload
+  const res = await blogService.newComment(comment, id, token)
+  return res
+})
+
 export const likeBlog = createAsyncThunk('blogs/likeBlog', async (blog) => {
   const { id, author, url, title } = blog
   const baseUpdate = {
@@ -46,6 +52,7 @@ export const blogsSlice = createSlice({
       })
       .addCase(fetchBlogs.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        // map the obj so it has a key that holds the user values permanently
         state.blogs = state.blogs.concat(action.payload)
       })
       .addCase(fetchBlogs.rejected, (state, action) => {
@@ -65,6 +72,11 @@ export const blogsSlice = createSlice({
       .addCase(deleteBlog.fulfilled, (state, action) => {
         const deletedId = action.payload
         state.blogs = state.blogs.filter((blog) => blog.id !== deletedId)
+      })
+      // newComment case
+      .addCase(addNewComment.fulfilled, (state, action) => {
+        const blog = action.payload
+        state.blogs = state.blogs.map((b) => (b.id !== blog.id ? b : blog))
       })
   },
 })
