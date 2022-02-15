@@ -20,8 +20,8 @@ const UsersInformation = () => {
 
   const usersList = users.map((user) => (
     <div key={user.id}>
-      <p>
-        <Link to={`/users/${user.id}`}>{user.username}</Link>- {user.blogs.length}
+      <p className='hover:underline'>
+        <Link to={`/users/${user.id}`}>{user.username}</Link> - {user.blogs.length}
       </p>
     </div>
   ))
@@ -29,11 +29,11 @@ const UsersInformation = () => {
   return (
     <>
       {!showOutlet ? (
-        <>
-          <h2>Users</h2>
+        <div className='flex flex-col justify-center items-center text-[#E5E9F0]'>
+          <h2 className='text-2xl'>Users</h2>
           <h4>blogs created</h4>
           {usersList}
-        </>
+        </div>
       ) : (
         <Outlet context={[resourceId, setShowOutlet]} />
       )}

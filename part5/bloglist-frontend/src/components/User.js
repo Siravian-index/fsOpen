@@ -15,17 +15,18 @@ const User = () => {
     }
   }, [user])
 
+  const blogs = user.blogs.map((blog) => (
+    <ul key={blog.id}>
+      <li>{blog.title}</li>
+    </ul>
+  ))
   return (
     <>
       {user && (
-        <div>
+        <div className='flex flex-col justify-center items-center text-[#E5E9F0]'>
           <h2>{user.username}</h2>
-          <h3>added blogs</h3>
-          {user.blogs.map((blog) => (
-            <ul key={blog.id}>
-              <li>{blog.title}</li>
-            </ul>
-          ))}
+          <h3>added blogs:</h3>
+          {user.blogs.length > 0 ? blogs : 'no blogs :('}
         </div>
       )}
     </>
