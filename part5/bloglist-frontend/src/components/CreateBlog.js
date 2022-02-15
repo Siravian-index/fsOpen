@@ -32,56 +32,68 @@ const CreateBlog = () => {
   return (
     <>
       {showBlogForm && (
-        <div>
-          <h2>create new</h2>
-          <form onSubmit={(e) => handleNewBlog(e, newBlog)}>
-            <div>
-              <label>
+        <div className='flex flex-col justify-center items-center'>
+          <h2 className='text-3xl text-[#E5E9F0] my-3'>create new</h2>
+          <form className='flex flex-col gap-1' onSubmit={(e) => handleNewBlog(e, newBlog)}>
+            <div className='flex justify-between items-baseline'>
+              <label className='text-[#E5E9F0]' htmlFor='title'>
                 title:
-                <input
-                  placeholder='title'
-                  id='title'
-                  value={newBlog.title}
-                  onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
-                  type='text'
-                  required
-                />
               </label>
+              <input
+                className='rounded py-1 px-1 outline outline-[#3B4252]'
+                placeholder='title'
+                id='title'
+                value={newBlog.title}
+                onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+                type='text'
+                required
+              />
             </div>
-            <div>
-              <label>
+            <div className='flex justify-between items-baseline'>
+              <label className='text-[#E5E9F0]' htmlFor='author'>
                 author:
-                <input
-                  placeholder='author'
-                  id='author'
-                  value={newBlog.author}
-                  onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
-                  type='text'
-                  required
-                />
               </label>
+              <input
+                className='rounded py-1 px-1 outline outline-[#3B4252]'
+                placeholder='author'
+                id='author'
+                value={newBlog.author}
+                onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
+                type='text'
+                required
+              />
             </div>
-            <div>
-              <label>
+            <div className='flex justify-between items-baseline'>
+              <label className='text-[#E5E9F0]' htmlFor='url'>
                 url:
-                <input
-                  placeholder='url'
-                  id='url'
-                  value={newBlog.url}
-                  onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
-                  type='text'
-                  required
-                />
               </label>
+              <input
+                className='rounded py-1 px-1 outline outline-[#3B4252]'
+                placeholder='url'
+                id='url'
+                value={newBlog.url}
+                onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
+                type='text'
+                required
+              />
             </div>
-            <button disabled={!canSave} id='submit-blog' type='submit'>
+            <button
+              className={`${canSave ? 'bg-[#A3BE8C]' : 'bg-slate-400'} rounded py-1 px-2 text-[#D8DEE9]`}
+              disabled={!canSave}
+              id='submit-blog'
+              type='submit'
+            >
               create
             </button>
           </form>
         </div>
       )}
-      <div>
-        <button id='show-form-button' onClick={() => setShowBlogForm(!showBlogForm)}>
+      <div className='flex justify-center'>
+        <button
+          className='bg-[#D08770] rounded py-1 px-2 mt-1 text-[#D8DEE9]'
+          id='show-form-button'
+          onClick={() => setShowBlogForm(!showBlogForm)}
+        >
           {showBlogForm ? 'cancel' : 'create a new blog'}
         </button>
       </div>

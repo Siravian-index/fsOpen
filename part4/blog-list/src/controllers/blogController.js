@@ -84,8 +84,6 @@ module.exports.newComment = async (req, res) => {
     return res.status(400).end()
   }
   try {
-    const user = req.user
-    console.log(user)
     const blog = await Blog.findById(id)
     blog.comments.push(comment)
     await blog.save()
