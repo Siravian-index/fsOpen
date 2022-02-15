@@ -9,11 +9,12 @@ const BlogComments = ({ blog }) => {
   const { comments, id } = blog
   const [comment, setComment] = useState('')
 
+  const canSave = Boolean(comment)
   const handleSubmit = async (e) => {
-    // const { comment, id, token } = payload
     e.preventDefault()
     const payload = { comment, id, token }
     dispatch(addNewComment(payload))
+    setComment('')
   }
 
   const commentsList = comments.map((c, i) => (
@@ -26,7 +27,7 @@ const BlogComments = ({ blog }) => {
       <h3>comments</h3>
       <form onSubmit={(e) => handleSubmit(e)}>
         <input type='text' value={comment} onChange={(e) => setComment(e.target.value)} />
-        <button>add comment</button>
+        <button disabled={!canSave}>add comment</button>
       </form>
       {commentsList}
     </>
