@@ -23,7 +23,11 @@ const Notification = () => {
 
   // error prop is just to add the style
   return (
-    <>{message && <div className={`m-2 p-2 text-2xl ${error ? 'text-[#BF616A]' : 'text-[#A3BE8C]'}`}>{message}</div>}</>
+    <>
+      {message && (
+        <div className={`m-2 p-2 text-2xl ${error ? 'text-[#BF616A]' : 'text-[#A3BE8C] text-center'}`}>{message}</div>
+      )}
+    </>
   )
 }
 

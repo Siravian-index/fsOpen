@@ -20,7 +20,7 @@ const BlogList = () => {
   }
   return (
     <>
-      <section>{content}</section>
+      <section className='flex flex-wrap gap-3 m-4'>{content}</section>
     </>
   )
 }

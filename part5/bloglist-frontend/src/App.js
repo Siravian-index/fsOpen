@@ -28,7 +28,7 @@ const App = () => {
   }, [])
 
   return (
-    <div className='font-mono bg-[#3B4252]'>
+    <div className='font-mono bg-[#3B4252] overflow-auto '>
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Dashboard />}>

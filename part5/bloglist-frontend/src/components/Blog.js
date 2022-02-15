@@ -39,41 +39,38 @@ const Blog = () => {
     }
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
   return (
     <>
       {blog && (
-        <>
-          <div style={blogStyle} className='blog'>
-            <h3 className='title-author'>
-              {blog.title} {blog.author}
-            </h3>
+        <div className='flex flex-col justify-center items-center text-[#E5E9F0] text-xl gap-y-1'>
+          <div className='blog flex flex-col items-start '>
+            <div className='title-author flex justify-center items-center '>
+              <span>{`${blog.title} ${blog.author}`}</span>
+            </div>
             <a href={blog.url} target='_blank' rel='noreferrer'>
               {blog.url}
             </a>
             <div>
               likes {blog.likes}{' '}
-              <button id='like-button' onClick={() => handleLike(blog)}>
+              <button className='rounded py-1 px-2 bg-[#8FBCBB]' id='like-button' onClick={() => handleLike(blog)}>
                 like
               </button>
             </div>
             <div>added by {blog.user?.name || postedBy}</div>
             <div>
               {(user.username === blog.user?.username || username === user.username) && (
-                <button id='delete-button' onClick={() => handleDelete(blog)}>
+                <button
+                  className='rounded py-1 px-2 bg-[#BF616A]'
+                  id='delete-button'
+                  onClick={() => handleDelete(blog)}
+                >
                   delete
                 </button>
               )}
             </div>
-            <BlogComments blog={blog} />
           </div>
-        </>
+          <BlogComments blog={blog} />
+        </div>
       )}
     </>
   )
