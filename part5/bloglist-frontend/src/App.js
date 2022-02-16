@@ -11,6 +11,8 @@ import Blog from './components/Blog'
 import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
 import Blogs from './components/Blogs'
 
+// TODO
+// solve the bug where it is saving undefined to the localStorage
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectUserObj)

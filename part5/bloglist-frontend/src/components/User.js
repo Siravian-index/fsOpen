@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 // local
 import { selectUserFromArray } from '../reducers/usersSlice'
 const User = () => {
@@ -17,7 +17,9 @@ const User = () => {
 
   const blogs = user.blogs.map((blog) => (
     <ul key={blog.id}>
-      <li>{blog.title}</li>
+      <li className='hover:underline'>
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+      </li>
     </ul>
   ))
   return (
