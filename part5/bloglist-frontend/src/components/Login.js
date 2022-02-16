@@ -1,12 +1,13 @@
 // third parties
-import Notification from './Notification'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 // local imports
+import Notification from './Notification'
 import { showNotification } from '../reducers/notificationSlice'
 import { logUser } from '../reducers/userSlice'
 import { useNavigate } from 'react-router-dom'
 
+// Check if user is already login and redirect accordingly
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' })
   const dispatch = useDispatch()

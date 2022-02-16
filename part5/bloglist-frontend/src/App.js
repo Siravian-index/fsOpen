@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 // local imports
@@ -8,27 +7,11 @@ import UsersList from './components/UsersList'
 import Login from './components/Login'
 import User from './components/User'
 import Blog from './components/Blog'
-import { readUserFromLocalStorage, selectUserObj } from './reducers/userSlice'
 import Blogs from './components/Blogs'
+import { useAuth } from './hooks/useAuth'
 
-// TODO
-// solve the bug where it is saving undefined to the localStorage
 const App = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(selectUserObj)
-
-  useEffect(() => {
-    let mounted = true
-    if (!user.token && mounted) {
-      // create a hook to check if use is log in and handle it appropriately
-      // in the custom hook place this first so the logic can follow
-      // we check if no user is found then we redirect the user.
-      // else the data is loaded
-      dispatch(readUserFromLocalStorage())
-    }
-    return () => (mounted = false)
-  }, [])
-
+  useAuth()
   return (
     <div className='font-mono bg-[#3B4252] overflow-auto '>
       <Routes>

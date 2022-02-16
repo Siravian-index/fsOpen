@@ -17,11 +17,14 @@ const BlogComments = ({ blog }) => {
     setComment('')
   }
 
-  const commentsList = comments.map((c, i) => (
-    <ul key={i}>
-      <li>{c}</li>
-    </ul>
-  ))
+  const commentsList = comments
+    .slice()
+    .reverse()
+    .map((c, i) => (
+      <ul key={i}>
+        <li>{c}</li>
+      </ul>
+    ))
   return (
     <>
       <div>
