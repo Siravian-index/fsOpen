@@ -1,15 +1,26 @@
-import Blog from './Blog'
 import React from 'react'
+import { useSelector } from 'react-redux'
+// local imports
+import { useLoadResource } from '../hooks/useLoadResource'
+import { fetchBlogs, selectBlogsState } from '../reducers/blogsSlice'
+import BlogItem from './BlogItem'
 
-const BlogList = ({ blogs, setBlogs, user }) => {
-  // sort by the number of likes
+const BlogList = () => {
+  const { blogs, status: blogStatus, error } = useSelector(selectBlogsState)
+  useLoadResource(blogs, blogStatus, fetchBlogs)
+
+  let content
+  if (blogStatus === 'loading') {
+    content = <div>loading...</div>
+  } else if (blogStatus === 'succeeded') {
+    const orderedBlogs = blogs.slice().sort((a, b) => b.likes - a.likes)
+    content = orderedBlogs.map((blog) => <BlogItem key={blog.id} blog={blog} />)
+  } else if (blogStatus === 'failed') {
+    content = <div>{error}</div>
+  }
   return (
     <>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />
-        ))}
+      <section className='flex flex-wrap gap-3 m-4'>{content}</section>
     </>
   )
 }

@@ -24,6 +24,18 @@ export const createOne = async (blog, token) => {
   }
 }
 
+export const newComment = async (comment, blogId, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+  try {
+    const res = await axios.post(`${baseUrl}/${blogId}/comments`, { comment }, config)
+    if (res.status === 201) {
+      return res.data
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const editBlog = async (blog, id) => {
   try {
     const res = await axios.put(`${baseUrl}/${id}`, blog)
@@ -40,7 +52,7 @@ export const deleteBlog = async (id, token) => {
   try {
     const res = await axios.delete(`${baseUrl}/${id}`, config)
     if (res.status === 204) {
-      return 'blog deleted'
+      return id
     }
   } catch (err) {
     console.log(err)

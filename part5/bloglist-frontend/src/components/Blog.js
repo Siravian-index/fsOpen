@@ -1,87 +1,79 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import * as blogService from '../services/blogs'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+// local imports
+import { deleteBlog, likeBlog, selectBlogFromArray } from '../reducers/blogsSlice'
+import { selectUserObj } from '../reducers/userSlice'
+import BlogComments from './BlogComments'
 
-const Blog = ({ blog, setBlogs, user }) => {
-  const [showExtraInfo, setShowExtraInfo] = useState(false)
+const Blog = () => {
+  const user = useSelector(selectUserObj)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [blogId, setShowOutlet] = useOutletContext()
+  const blog = useSelector((state) => selectBlogFromArray(state, blogId))
   const [postedBy, setPostedBy] = useState('')
   const [username, setUsername] = useState('')
 
-  const handleShow = () => {
-    setShowExtraInfo(!showExtraInfo)
-  }
-  const handleLike = async (blog) => {
-    const { id, author, url, title } = blog
-    const baseUpdate = {
-      user: blog.user?.id || blog.user,
-      likes: blog.likes + 1,
-      author,
-      title,
-      url,
+  // can extract this to an hook
+  useEffect(() => {
+    let m = true
+    if (!blog && m) {
+      navigate('/blogs/')
+      setShowOutlet(false)
     }
+    return () => (m = false)
+  }, [blog])
+
+  const handleLike = async (blog) => {
     setPostedBy(postedBy || blog.user?.name)
     setUsername(username || blog.user?.username)
-    const updatedBlog = await blogService.editBlog(baseUpdate, id)
-    await setBlogs((prev) => prev.map((b) => (b.id !== blog.id ? b : updatedBlog)))
+    dispatch(likeBlog(blog))
   }
 
   const handleDelete = async (blog) => {
     const c = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
     if (c) {
-      const res = await blogService.deleteBlog(blog.id, user.token)
-      console.log(res)
-      if (res) {
-        // set success banner
-        setBlogs((prev) => prev.filter((b) => b.id !== blog.id))
-      }
-      // set error banner
+      const payload = { blog, token: user.token }
+      dispatch(deleteBlog(payload))
     }
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
   return (
     <>
-      <div style={blogStyle} className='blog'>
-        <span className='title-author'>
-          {blog.title} {blog.author}{' '}
-          <button id='show-more' onClick={handleShow}>
-            {showExtraInfo ? 'hide' : 'view'}
-          </button>
-        </span>
-        {showExtraInfo && (
-          <div className='extra-content'>
-            <div>{blog.url}</div>
+      {blog && (
+        <div className='flex flex-col justify-center items-center text-[#E5E9F0] text-xl gap-y-1'>
+          <div className='blog flex flex-col items-start '>
+            <div className='title-author flex justify-center items-center '>
+              <span>{`${blog.title} ${blog.author}`}</span>
+            </div>
+            <a className='hover:underline' href={blog.url} target='_blank' rel='noreferrer'>
+              {blog.url}
+            </a>
             <div>
               likes {blog.likes}{' '}
-              <button id='like-button' onClick={() => handleLike(blog)}>
+              <button className='rounded py-1 px-2 bg-[#8FBCBB]' id='like-button' onClick={() => handleLike(blog)}>
                 like
               </button>
             </div>
-            <div>{blog.user?.name || postedBy}</div>
+            <div>added by {blog.user?.name || postedBy}</div>
             <div>
               {(user.username === blog.user?.username || username === user.username) && (
-                <button id='delete-button' onClick={() => handleDelete(blog)}>
+                <button
+                  className='rounded py-1 px-2 bg-[#BF616A]'
+                  id='delete-button'
+                  onClick={() => handleDelete(blog)}
+                >
                   delete
                 </button>
               )}
             </div>
           </div>
-        )}
-      </div>
+          <BlogComments blog={blog} />
+        </div>
+      )}
     </>
   )
 }
 
 export default Blog
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  setBlogs: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-}

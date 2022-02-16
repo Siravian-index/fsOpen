@@ -1,5 +1,4 @@
 import axios from 'axios'
-import * as localStorageUtility from '../utils/localStorageUtility'
 const baseUrl = '/api/login'
 
 export const login = async (credentials) => {
@@ -11,9 +10,4 @@ export const login = async (credentials) => {
   } catch (err) {
     console.log(err)
   }
-}
-
-export const logout = (callback) => {
-  localStorageUtility.deleteFromLocalStorage('currentUser')
-  callback(null)
 }

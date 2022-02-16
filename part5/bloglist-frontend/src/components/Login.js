@@ -1,56 +1,77 @@
-import Notification from './Notification'
+// third parties
 import React, { useState } from 'react'
-import * as loginService from '../services/login'
-import * as localStorageUtility from '../utils/localStorageUtility'
+import { useDispatch } from 'react-redux'
+// local imports
+import Notification from './Notification'
+import { showNotification } from '../reducers/notificationSlice'
+import { logUser } from '../reducers/userSlice'
+import { useNavigate } from 'react-router-dom'
 
-const Login = ({ notification, setUser, setNotificationConfig }) => {
+// Check if user is already login and redirect accordingly
+const Login = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleLogin = async (e, credentials) => {
     e.preventDefault()
-    const userData = await loginService.login(credentials)
-    if (userData) {
-      setUser(userData)
-      localStorageUtility.saveToLocalStorage('currentUser', userData)
-      // setCredentials({ username: '', password: '' })
-    } else {
-      setNotificationConfig({ type: 'loginError' })
+    try {
+      const res = await dispatch(logUser(credentials)).unwrap()
+      if (!res) {
+        throw new Error('invalid User')
+      }
+      navigate('/blogs')
+    } catch (err) {
+      dispatch(showNotification({ message: 'wrong username or password', error: true }))
       console.log('user not found')
     }
   }
   return (
-    <div>
-      <h2>log in to application</h2>
-      <Notification config={notification} />
-      <form onSubmit={(e) => handleLogin(e, credentials)}>
-        <div>
-          <label>
-            username:
-            <input
-              type='text'
-              id='username'
-              value={credentials.username}
-              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            password:
-            <input
-              type='password'
-              id='password'
-              value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <button id='login-button' type='submit'>
-          Login
-        </button>
-      </form>
+    <div className='h-screen flex flex-col justify-center'>
+      <div className='flex flex-col items-center justify-center bg-[#E5E9F0] gap-1 '>
+        <h2 className='text-xl mt-4'>log in to application</h2>
+        <Notification />
+        <form
+          onSubmit={(e) => handleLogin(e, credentials)}
+          className='flex flex-col justify-center items-center gap-1 mb-2'
+        >
+          <div className=''>
+            <label>
+              username:
+              <input
+                className='border p-1 rounded'
+                type='text'
+                id='username'
+                placeholder='username'
+                value={credentials.username}
+                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              password:
+              <input
+                className='border p-1 rounded'
+                type='password'
+                id='password'
+                placeholder='password'
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                required
+              />
+            </label>
+          </div>
+          <button
+            id='login-button'
+            type='submit'
+            className='border py-1 px-3 bg-[#8FBCBB] rounded transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300'
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   )
 }

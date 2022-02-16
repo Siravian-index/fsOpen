@@ -1,7 +1,4 @@
 const { Blog } = require('../models/blogSchema.js')
-const { User } = require('../models/userSchema.js')
-const jwt = require('jsonwebtoken')
-const logger = require('../utils/log/logger.js')
 const CustomError = require('../utils/middleware/error/CustomError.js')
 
 module.exports.allBlogs = async (req, res, next) => {
@@ -56,6 +53,9 @@ module.exports.deleteBlog = async (req, res) => {
   const blogToDelete = await Blog.findById(id)
   if (user._id.toString() === blogToDelete.user.toString()) {
     await Blog.findByIdAndDelete(id)
+    // delete the blog id from user.blog array
+    user.blogs = user.blogs.filter((blogId) => blogId.toString() !== blogToDelete._id.toString())
+    await user.save()
     return res.status(204).end()
   }
   throw new CustomError('your are not the owner of this blog', 401)
@@ -74,5 +74,21 @@ module.exports.updateBlog = async (req, res) => {
     return res.status(200).json(updatedBlog.toJSON())
   } else {
     return res.status(404).end()
+  }
+}
+
+module.exports.newComment = async (req, res) => {
+  const { comment } = req.body
+  const { id } = req.params
+  if (!comment || !id) {
+    return res.status(400).end()
+  }
+  try {
+    const blog = await Blog.findById(id)
+    blog.comments.push(comment)
+    await blog.save()
+    return res.status(201).json(blog)
+  } catch (err) {
+    next(err)
   }
 }

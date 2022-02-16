@@ -1,26 +1,32 @@
 import '../index.css'
 import React from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { hideNotification, selectNotificationObj } from '../reducers/notificationSlice'
 
-const Notification = ({ config }) => {
-  const { type, blog } = config
-  const blogSuccess = (blog) => {
-    return (
-      <h4 className='success'>
-        a new blog {blog.title} by {blog.author} added
-      </h4>
-    )
-  }
-  const blogError = () => {
-    return <h4 className='error'>there has been an error</h4>
-  }
-  const loginError = () => {
-    return <h4 className='error'>wrong username or password</h4>
-  }
+const Notification = () => {
+  const { message, error } = useSelector(selectNotificationObj)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    let mounted = true
+    let id
+    if (message && mounted) {
+      setTimeout(() => {
+        dispatch(hideNotification())
+      }, 5000)
+    }
+    return () => {
+      mounted = false
+      clearTimeout(id)
+    }
+  }, [message])
+
+  // error prop is just to add the style
   return (
     <>
-      {type === 'loginError' && loginError()}
-      {type === 'blogSuccess' && blog && blogSuccess(blog)}
-      {type === 'blogError' && blogError()}
+      {message && (
+        <div className={`m-2 p-2 text-2xl ${error ? 'text-[#BF616A]' : 'text-[#A3BE8C] text-center'}`}>{message}</div>
+      )}
     </>
   )
 }
