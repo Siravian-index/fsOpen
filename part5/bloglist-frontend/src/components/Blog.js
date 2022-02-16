@@ -47,7 +47,7 @@ const Blog = () => {
             <div className='title-author flex justify-center items-center '>
               <span>{`${blog.title} ${blog.author}`}</span>
             </div>
-            <a href={blog.url} target='_blank' rel='noreferrer'>
+            <a className='hover:underline' href={blog.url} target='_blank' rel='noreferrer'>
               {blog.url}
             </a>
             <div>
